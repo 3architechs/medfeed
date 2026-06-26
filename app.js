@@ -27,7 +27,7 @@ sidebar.addEventListener('mouseleave', () => {
 /* ── SIDEBAR TOOLTIPS (position:fixed to escape clip) ── */
 const tooltip = document.getElementById('sidebarTooltip');
 
-document.querySelectorAll('.filter-dot[data-tooltip]').forEach(dot => {
+document.querySelectorAll('.filter-icon[data-tooltip]').forEach(dot => {
   dot.addEventListener('mouseenter', (e) => {
     if (sidebar.classList.contains('expanded')) return;
     const rect = dot.getBoundingClientRect();
@@ -65,13 +65,11 @@ const archiveToggle = document.getElementById('archiveToggle');
 const archiveDrawer = document.getElementById('archiveDrawer');
 const archiveOverlay = document.getElementById('archiveOverlay');
 
-archiveToggle.addEventListener('click', openArchive);
-
-function openArchive() {
+archiveToggle.addEventListener('click', () => {
   archiveDrawer.classList.add('open');
   archiveOverlay.classList.add('open');
   document.body.style.overflow = 'hidden';
-}
+});
 
 function closeArchive() {
   archiveDrawer.classList.remove('open');
@@ -79,50 +77,55 @@ function closeArchive() {
   document.body.style.overflow = '';
 }
 
-function selectRange(btn, range) {
-  document.querySelectorAll('.range-chip').forEach(c => c.classList.remove('active'));
-  btn.classList.add('active');
-  const customDates = document.getElementById('customDates');
-  if (range === 'custom') {
-    customDates.classList.add('open');
-  } else {
-    customDates.classList.remove('open');
-  }
-}
+archiveOverlay.addEventListener('click', closeArchive);
+document.getElementById('archiveClose').addEventListener('click', closeArchive);
 
-function applyCustomRange() {
+document.querySelectorAll('.range-chip[data-range]').forEach(chip => {
+  chip.addEventListener('click', () => {
+    document.querySelectorAll('.range-chip').forEach(c => c.classList.remove('active'));
+    chip.classList.add('active');
+    const customDates = document.getElementById('customDates');
+    if (chip.dataset.range === 'custom') {
+      customDates.classList.add('open');
+    } else {
+      customDates.classList.remove('open');
+    }
+  });
+});
+
+document.getElementById('dateApply').addEventListener('click', () => {
   const from = document.getElementById('dateFrom').value;
   const to = document.getElementById('dateTo').value;
   if (from && to) {
     console.log('Custom range:', from, '→', to);
-    // In production: fetch results for this range
   }
-}
+});
 
 /* ── WARNING BAR TOGGLE ── */
-function toggleWarning(id) {
-  const bar = document.getElementById(id);
-  const expanded = document.getElementById(id + '-expanded');
-  const btn = bar.querySelector('.warning-toggle');
-  const isOpen = expanded.classList.contains('open');
-  expanded.classList.toggle('open', !isOpen);
-  btn.textContent = isOpen ? 'show warning' : 'hide warning';
-}
+document.querySelectorAll('.warning-toggle[data-warn]').forEach(btn => {
+  btn.addEventListener('click', () => {
+    const id = btn.dataset.warn;
+    const expanded = document.getElementById(id + '-expanded');
+    const isOpen = expanded.classList.contains('open');
+    expanded.classList.toggle('open', !isOpen);
+    btn.textContent = isOpen ? 'show warning' : 'hide warning';
+  });
+});
 
 /* ── CARD EXPAND ── */
-function toggleExpand(id, btn) {
-  const area = document.getElementById(id);
-  const isOpen = area.classList.contains('open');
-  area.classList.toggle('open', !isOpen);
-  btn.classList.toggle('open', !isOpen);
-  btn.querySelector('span') && (btn.querySelector('span').textContent = isOpen ? 'Show full post' : 'Hide full post');
-  // Update the text node (btn has SVG + text node)
-  btn.childNodes.forEach(node => {
-    if (node.nodeType === 3) {
-      node.textContent = isOpen ? '\n            Show full post\n          ' : '\n            Hide full post\n          ';
-    }
+document.querySelectorAll('.card-expand-btn[data-expand]').forEach(btn => {
+  btn.addEventListener('click', () => {
+    const area = document.getElementById(btn.dataset.expand);
+    const isOpen = area.classList.contains('open');
+    area.classList.toggle('open', !isOpen);
+    btn.classList.toggle('open', !isOpen);
+    btn.childNodes.forEach(node => {
+      if (node.nodeType === 3 && node.textContent.trim()) {
+        node.textContent = isOpen ? '\n            Show full post\n          ' : '\n            Hide full post\n          ';
+      }
+    });
   });
-}
+});
 
 /* ── SEARCH ── */
 const searchInput = document.getElementById('searchInput');
@@ -249,14 +252,22 @@ function getSearchTerms(query) {
   return [...new Set(terms)];
 }
 
-function highlight(text, terms) {
-  let result = text;
-  terms.forEach(term => {
-    if (term.length < 2) return;
-    const re = new RegExp(`(${term.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')})`, 'gi');
-    result = result.replace(re, '<mark>$1</mark>');
+function buildHighlightedText(text, terms) {
+  const validTerms = terms.filter(t => t.length >= 2);
+  if (validTerms.length === 0) {
+    return [document.createTextNode(text)];
+  }
+  const pattern = validTerms.map(t => t.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')).join('|');
+  const re = new RegExp(`(${pattern})`, 'gi');
+  const parts = text.split(re);
+  return parts.map(part => {
+    if (validTerms.some(t => part.toLowerCase() === t.toLowerCase())) {
+      const mark = document.createElement('mark');
+      mark.textContent = part;
+      return mark;
+    }
+    return document.createTextNode(part);
   });
-  return result;
 }
 
 let searchTimeout;
@@ -298,30 +309,54 @@ function runSearch() {
   });
 
   searchResultCount.textContent = `${results.length} result${results.length !== 1 ? 's' : ''}`;
-  searchResultsEl.innerHTML = '';
+  while (searchResultsEl.firstChild) searchResultsEl.removeChild(searchResultsEl.firstChild);
 
   if (results.length === 0) {
-    searchResultsEl.innerHTML = '<div style="padding:16px;text-align:center;font-size:0.78rem;color:var(--text-muted);">No findings matched. Try different keywords.</div>';
+    const empty = document.createElement('div');
+    empty.className = 'search-empty';
+    empty.textContent = 'No findings matched. Try different keywords.';
+    searchResultsEl.appendChild(empty);
   } else {
     results.forEach(card => {
       const item = document.createElement('div');
       item.className = 'search-result-item';
-      item.innerHTML = `
-        <div class="search-result-title">${highlight(card.title, terms)}</div>
-        <div class="search-result-meta">
-          <span>${card.handle}</span>
-          <span>·</span>
-          <span>${card.time}</span>
-          <span>·</span>
-          <span>${card.specialty}</span>
-        </div>
-      `;
+
+      const titleDiv = document.createElement('div');
+      titleDiv.className = 'search-result-title';
+      buildHighlightedText(card.title, terms).forEach(n => titleDiv.appendChild(n));
+
+      const metaDiv = document.createElement('div');
+      metaDiv.className = 'search-result-meta';
+      [card.handle, '·', card.time, '·', card.specialty].forEach(text => {
+        const span = document.createElement('span');
+        span.textContent = text;
+        metaDiv.appendChild(span);
+      });
+
+      item.appendChild(titleDiv);
+      item.appendChild(metaDiv);
       searchResultsEl.appendChild(item);
     });
   }
 
   searchDropdown.classList.add('visible');
 }
+
+/* ── MOBILE SIDEBAR TOGGLE ── */
+const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+const sidebarOverlay = document.getElementById('sidebarOverlay');
+
+mobileMenuBtn.addEventListener('click', () => {
+  sidebarExpanded = !sidebarExpanded;
+  sidebar.classList.toggle('expanded', sidebarExpanded);
+  sidebarOverlay.classList.toggle('open', sidebarExpanded);
+});
+
+sidebarOverlay.addEventListener('click', () => {
+  sidebarExpanded = false;
+  sidebar.classList.remove('expanded');
+  sidebarOverlay.classList.remove('open');
+});
 
 /* ── TIMESTAMP TICKER ── */
 let minutesAgo = 0;
@@ -332,10 +367,10 @@ setInterval(() => {
 }, 60000);
 
 /* ── FOOTER TOGGLE ── */
-function toggleFooter() {
+document.getElementById('footerToggle').addEventListener('click', () => {
   const expanded = document.getElementById('footerExpanded');
   const btn = document.getElementById('footerToggle');
   const isOpen = expanded.classList.contains('open');
   expanded.classList.toggle('open', !isOpen);
   btn.textContent = isOpen ? 'Read more' : 'Show less';
-}
+});

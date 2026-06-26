@@ -3,6 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src 'self' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data:; script-src 'self'" />
   <title>MedFeed — Real findings. No filters.</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -32,37 +33,51 @@
     <div class="nav-section-label">Specialty</div>
     <ul class="filter-list">
       <li class="filter-item active" data-filter="specialty" data-value="all">
-        <span class="filter-dot dot-all" data-tooltip="All specialties"></span>
+        <span class="filter-icon" data-tooltip="All specialties">
+          <svg viewBox="0 0 16 16" fill="none"><circle cx="4" cy="4" r="2" fill="currentColor"/><circle cx="12" cy="4" r="2" fill="currentColor"/><circle cx="4" cy="12" r="2" fill="currentColor"/><circle cx="12" cy="12" r="2" fill="currentColor"/></svg>
+        </span>
         <span class="filter-label">All specialties</span>
         <span class="filter-count">48</span>
       </li>
       <li class="filter-item" data-filter="specialty" data-value="cardiology">
-        <span class="filter-dot dot-cardiology" data-tooltip="Cardiology"></span>
+        <span class="filter-icon icon-cardiology" data-tooltip="Cardiology">
+          <svg viewBox="0 0 16 16" fill="none"><path d="M8 14s-5.5-4-5.5-7.5C2.5 4 4 2.5 5.5 2.5 6.5 2.5 7.5 3 8 4c.5-1 1.5-1.5 2.5-1.5C12 2.5 13.5 4 13.5 6.5 13.5 10 8 14 8 14z" fill="currentColor"/></svg>
+        </span>
         <span class="filter-label">Cardiology</span>
         <span class="filter-count">12</span>
       </li>
       <li class="filter-item" data-filter="specialty" data-value="oncology">
-        <span class="filter-dot dot-oncology" data-tooltip="Oncology"></span>
+        <span class="filter-icon icon-oncology" data-tooltip="Oncology">
+          <svg viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="3" stroke="currentColor" stroke-width="1.5"/><circle cx="8" cy="8" r="6" stroke="currentColor" stroke-width="1.2" stroke-dasharray="3 2"/></svg>
+        </span>
         <span class="filter-label">Oncology</span>
         <span class="filter-count">9</span>
       </li>
       <li class="filter-item" data-filter="specialty" data-value="neurology">
-        <span class="filter-dot dot-neurology" data-tooltip="Neurology"></span>
+        <span class="filter-icon icon-neurology" data-tooltip="Neurology">
+          <svg viewBox="0 0 16 16" fill="none"><path d="M4 12 Q4 8 6 6 Q8 4 8 2" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><path d="M8 2 Q8 4 10 6 Q12 8 12 12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><path d="M6 10 Q8 8 10 10" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg>
+        </span>
         <span class="filter-label">Neurology</span>
         <span class="filter-count">8</span>
       </li>
       <li class="filter-item" data-filter="specialty" data-value="nutrition">
-        <span class="filter-dot dot-nutrition" data-tooltip="Nutrition &amp; diet"></span>
+        <span class="filter-icon icon-nutrition" data-tooltip="Nutrition &amp; diet">
+          <svg viewBox="0 0 16 16" fill="none"><path d="M8 2c0 3-3 4-3 7a3 3 0 006 0c0-3-3-4-3-7z" fill="currentColor"/><path d="M8 10v4" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg>
+        </span>
         <span class="filter-label">Nutrition &amp; diet</span>
         <span class="filter-count">7</span>
       </li>
       <li class="filter-item" data-filter="specialty" data-value="mental-health">
-        <span class="filter-dot dot-mental" data-tooltip="Mental health"></span>
+        <span class="filter-icon icon-mental" data-tooltip="Mental health">
+          <svg viewBox="0 0 16 16" fill="none"><circle cx="8" cy="6" r="4" stroke="currentColor" stroke-width="1.5"/><path d="M5 13c0-2 1.5-3 3-3s3 1 3 3" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
+        </span>
         <span class="filter-label">Mental health</span>
         <span class="filter-count">6</span>
       </li>
       <li class="filter-item" data-filter="specialty" data-value="immunology">
-        <span class="filter-dot dot-immunology" data-tooltip="Immunology"></span>
+        <span class="filter-icon icon-immunology" data-tooltip="Immunology">
+          <svg viewBox="0 0 16 16" fill="none"><path d="M8 2v12M2 8h12M4.5 4.5l7 7M11.5 4.5l-7 7" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/><circle cx="8" cy="8" r="2" fill="currentColor"/></svg>
+        </span>
         <span class="filter-label">Immunology</span>
         <span class="filter-count">6</span>
       </li>
@@ -71,23 +86,33 @@
     <div class="nav-section-label">What kind?</div>
     <ul class="filter-list">
       <li class="filter-item active" data-filter="kind" data-value="all">
-        <span class="filter-dot dot-all" data-tooltip="All types"></span>
+        <span class="filter-icon" data-tooltip="All types">
+          <svg viewBox="0 0 16 16" fill="none"><rect x="2" y="2" width="5" height="5" rx="1" fill="currentColor"/><rect x="9" y="2" width="5" height="5" rx="1" fill="currentColor" opacity=".5"/><rect x="2" y="9" width="5" height="5" rx="1" fill="currentColor" opacity=".5"/><rect x="9" y="9" width="5" height="5" rx="1" fill="currentColor"/></svg>
+        </span>
         <span class="filter-label">All</span>
       </li>
       <li class="filter-item" data-filter="kind" data-value="breakthrough">
-        <span class="filter-dot dot-breakthrough" data-tooltip="Breakthrough"></span>
+        <span class="filter-icon icon-breakthrough" data-tooltip="Breakthrough">
+          <svg viewBox="0 0 16 16" fill="none"><path d="M8 2l1.5 4H14l-3.5 2.5L12 13 8 10.5 4 13l1.5-4.5L2 6h4.5z" fill="currentColor"/></svg>
+        </span>
         <span class="filter-label">Breakthrough</span>
       </li>
       <li class="filter-item" data-filter="kind" data-value="research">
-        <span class="filter-dot dot-research" data-tooltip="Research study"></span>
+        <span class="filter-icon icon-research" data-tooltip="Research study">
+          <svg viewBox="0 0 16 16" fill="none"><path d="M4 2h8v12H4z" stroke="currentColor" stroke-width="1.3"/><path d="M6 5h4M6 7.5h4M6 10h2" stroke="currentColor" stroke-width="1.1" stroke-linecap="round"/></svg>
+        </span>
         <span class="filter-label">Research study</span>
       </li>
       <li class="filter-item" data-filter="kind" data-value="trial">
-        <span class="filter-dot dot-trial" data-tooltip="Clinical trial"></span>
+        <span class="filter-icon icon-trial" data-tooltip="Clinical trial">
+          <svg viewBox="0 0 16 16" fill="none"><path d="M6 2v4l-2 6h8l-2-6V2" stroke="currentColor" stroke-width="1.3" stroke-linejoin="round"/><path d="M5 2h6" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
+        </span>
         <span class="filter-label">Clinical trial</span>
       </li>
       <li class="filter-item" data-filter="kind" data-value="safety">
-        <span class="filter-dot dot-safety" data-tooltip="Safety update"></span>
+        <span class="filter-icon icon-safety" data-tooltip="Safety update">
+          <svg viewBox="0 0 16 16" fill="none"><path d="M8 2L2 6v4c0 3 2.5 4.5 6 6 3.5-1.5 6-3 6-6V6z" stroke="currentColor" stroke-width="1.3" stroke-linejoin="round"/><path d="M8 6v3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><circle cx="8" cy="11" r=".8" fill="currentColor"/></svg>
+        </span>
         <span class="filter-label">Safety update</span>
       </li>
     </ul>
@@ -95,15 +120,21 @@
     <div class="nav-section-label">Source</div>
     <ul class="filter-list">
       <li class="filter-item active" data-filter="source" data-value="all">
-        <span class="filter-dot dot-all" data-tooltip="All sources"></span>
+        <span class="filter-icon" data-tooltip="All sources">
+          <svg viewBox="0 0 16 16" fill="none"><circle cx="5" cy="8" r="3" stroke="currentColor" stroke-width="1.3"/><circle cx="11" cy="8" r="3" stroke="currentColor" stroke-width="1.3"/></svg>
+        </span>
         <span class="filter-label">All sources</span>
       </li>
       <li class="filter-item" data-filter="source" data-value="independent">
-        <span class="filter-dot dot-independent" data-tooltip="Independent only"></span>
+        <span class="filter-icon icon-independent" data-tooltip="Independent only">
+          <svg viewBox="0 0 16 16" fill="none"><circle cx="8" cy="5" r="3" stroke="currentColor" stroke-width="1.3"/><path d="M4 14c0-2.5 1.8-4 4-4s4 1.5 4 4" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
+        </span>
         <span class="filter-label">Independent only</span>
       </li>
       <li class="filter-item" data-filter="source" data-value="institutional">
-        <span class="filter-dot dot-all" data-tooltip="Institutional only"></span>
+        <span class="filter-icon icon-institutional" data-tooltip="Institutional only">
+          <svg viewBox="0 0 16 16" fill="none"><path d="M8 2L3 5v1h10V5zM3 13h10v1H3z" fill="currentColor"/><path d="M4.5 6v7M7 6v7M9 6v7M11.5 6v7" stroke="currentColor" stroke-width="1.2"/></svg>
+        </span>
         <span class="filter-label">Institutional only</span>
       </li>
     </ul>
@@ -118,6 +149,7 @@
   </div>
 </aside>
 
+<div class="sidebar-overlay" id="sidebarOverlay"></div>
 <!-- Floating tooltip (injected by JS) -->
 <div class="sidebar-tooltip" id="sidebarTooltip"></div>
 
@@ -126,9 +158,12 @@
 
   <!-- TOP BAR -->
   <header class="topbar">
+    <button class="mobile-menu-btn" id="mobileMenuBtn" aria-label="Open menu">
+      <svg viewBox="0 0 16 16" fill="none"><path d="M2 4h12M2 8h12M2 12h12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+    </button>
     <div class="topbar-left">
       <h1 class="feed-title">Today's findings</h1>
-      <span class="feed-meta">48 from X in the last 24h · updated <span id="updatedAgo">just now</span></span>
+      <span class="feed-meta">48 from 𝕏 (Twitter) in the last 24h · updated <span id="updatedAgo">just now</span></span>
     </div>
     <div class="topbar-center">
       <div class="search-wrapper">
@@ -185,7 +220,7 @@
       <article class="card independent-card" data-specialty="cardiology" data-kind="independent" data-source="independent">
         <div class="warning-bar" id="warn1">
           <span class="warning-text">Not peer-reviewed · independent voice</span>
-          <button class="warning-toggle" onclick="toggleWarning('warn1')">show warning</button>
+          <button class="warning-toggle" data-warn="warn1">show warning</button>
         </div>
         <div class="warning-expanded" id="warn1-expanded">
           <p>This post is from an independent voice on X. It has not been peer-reviewed, published in a medical journal, or endorsed by any medical institution. Treat it as one doctor's opinion, not established medical fact.</p>
@@ -220,7 +255,7 @@
             </div>
             <a class="expand-open-x" href="#" onclick="return false;">Open on X ↗</a>
           </div>
-          <button class="card-expand-btn" onclick="toggleExpand('expand1', this)">
+          <button class="card-expand-btn" data-expand="expand1">
             <svg viewBox="0 0 16 16" fill="none"><path d="M4 6l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
             Show full post
           </button>
@@ -231,7 +266,7 @@
       <article class="card independent-card" data-specialty="cardiology" data-kind="independent" data-source="independent">
         <div class="warning-bar" id="warn2">
           <span class="warning-text">Not peer-reviewed · independent voice</span>
-          <button class="warning-toggle" onclick="toggleWarning('warn2')">show warning</button>
+          <button class="warning-toggle" data-warn="warn2">show warning</button>
         </div>
         <div class="warning-expanded" id="warn2-expanded">
           <p>This post is from an independent voice on X. It has not been peer-reviewed, published in a medical journal, or endorsed by any medical institution. Treat it as one doctor's opinion, not established medical fact.</p>
@@ -260,7 +295,7 @@
             </div>
             <a class="expand-open-x" href="#" onclick="return false;">Open on X ↗</a>
           </div>
-          <button class="card-expand-btn" onclick="toggleExpand('expand2', this)">
+          <button class="card-expand-btn" data-expand="expand2">
             <svg viewBox="0 0 16 16" fill="none"><path d="M4 6l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
             Show full post
           </button>
@@ -271,7 +306,7 @@
       <article class="card independent-card" data-specialty="mental-health" data-kind="independent" data-source="independent">
         <div class="warning-bar" id="warn3">
           <span class="warning-text">Not peer-reviewed · independent voice</span>
-          <button class="warning-toggle" onclick="toggleWarning('warn3')">show warning</button>
+          <button class="warning-toggle" data-warn="warn3">show warning</button>
         </div>
         <div class="warning-expanded" id="warn3-expanded">
           <p>This post is from an independent voice on X. It has not been peer-reviewed, published in a medical journal, or endorsed by any medical institution. Treat it as one doctor's opinion, not established medical fact.</p>
@@ -300,7 +335,7 @@
             </div>
             <a class="expand-open-x" href="#" onclick="return false;">Open on X ↗</a>
           </div>
-          <button class="card-expand-btn" onclick="toggleExpand('expand3', this)">
+          <button class="card-expand-btn" data-expand="expand3">
             <svg viewBox="0 0 16 16" fill="none"><path d="M4 6l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
             Show full post
           </button>
@@ -344,7 +379,7 @@
             </div>
             <a class="expand-open-x" href="#" onclick="return false;">Open on X ↗</a>
           </div>
-          <button class="card-expand-btn" onclick="toggleExpand('expand4', this)">
+          <button class="card-expand-btn" data-expand="expand4">
             <svg viewBox="0 0 16 16" fill="none"><path d="M4 6l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
             Show full post
           </button>
@@ -377,7 +412,7 @@
             </div>
             <a class="expand-open-x" href="#" onclick="return false;">Open on X ↗</a>
           </div>
-          <button class="card-expand-btn" onclick="toggleExpand('expand5', this)">
+          <button class="card-expand-btn" data-expand="expand5">
             <svg viewBox="0 0 16 16" fill="none"><path d="M4 6l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
             Show full post
           </button>
@@ -410,7 +445,7 @@
             </div>
             <a class="expand-open-x" href="#" onclick="return false;">Open on X ↗</a>
           </div>
-          <button class="card-expand-btn" onclick="toggleExpand('expand6', this)">
+          <button class="card-expand-btn" data-expand="expand6">
             <svg viewBox="0 0 16 16" fill="none"><path d="M4 6l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
             Show full post
           </button>
@@ -443,7 +478,7 @@
             </div>
             <a class="expand-open-x" href="#" onclick="return false;">Open on X ↗</a>
           </div>
-          <button class="card-expand-btn" onclick="toggleExpand('expand7', this)">
+          <button class="card-expand-btn" data-expand="expand7">
             <svg viewBox="0 0 16 16" fill="none"><path d="M4 6l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
             Show full post
           </button>
@@ -476,7 +511,7 @@
             </div>
             <a class="expand-open-x" href="#" onclick="return false;">Open on X ↗</a>
           </div>
-          <button class="card-expand-btn" onclick="toggleExpand('expand8', this)">
+          <button class="card-expand-btn" data-expand="expand8">
             <svg viewBox="0 0 16 16" fill="none"><path d="M4 6l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
             Show full post
           </button>
@@ -509,7 +544,7 @@
             </div>
             <a class="expand-open-x" href="#" onclick="return false;">Open on X ↗</a>
           </div>
-          <button class="card-expand-btn" onclick="toggleExpand('expand9', this)">
+          <button class="card-expand-btn" data-expand="expand9">
             <svg viewBox="0 0 16 16" fill="none"><path d="M4 6l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
             Show full post
           </button>
@@ -523,7 +558,7 @@
   <footer class="site-footer">
     <div class="footer-collapsed">
       <span class="footer-legal">Legal &amp; editorial disclaimer — MedFeed is an independent aggregator. Content does not constitute medical advice.</span>
-      <button class="footer-expand-btn" id="footerToggle" onclick="toggleFooter()">Read more</button>
+      <button class="footer-expand-btn" id="footerToggle">Read more</button>
     </div>
     <div class="footer-expanded" id="footerExpanded">
       <div class="footer-about">
@@ -545,11 +580,11 @@
 </div>
 
 <!-- ARCHIVE DRAWER -->
-<div class="archive-overlay" id="archiveOverlay" onclick="closeArchive()"></div>
+<div class="archive-overlay" id="archiveOverlay"></div>
 <aside class="archive-drawer" id="archiveDrawer">
   <div class="archive-header">
     <h2 class="archive-title">Older findings</h2>
-    <button class="archive-close" onclick="closeArchive()" aria-label="Close">
+    <button class="archive-close" id="archiveClose" aria-label="Close">
       <svg viewBox="0 0 16 16" fill="none">
         <path d="M4 4l8 8M12 4l-8 8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
       </svg>
@@ -557,16 +592,16 @@
   </div>
   <div class="archive-strip">
     <div class="archive-range-chips">
-      <button class="range-chip active" onclick="selectRange(this, '48h')">48h</button>
-      <button class="range-chip" onclick="selectRange(this, '72h')">72h</button>
-      <button class="range-chip" onclick="selectRange(this, '7d')">7 days</button>
-      <button class="range-chip" onclick="selectRange(this, 'custom')">Custom</button>
+      <button class="range-chip active" data-range="48h">48h</button>
+      <button class="range-chip" data-range="72h">72h</button>
+      <button class="range-chip" data-range="7d">7 days</button>
+      <button class="range-chip" data-range="custom">Custom</button>
     </div>
     <div class="archive-custom-dates" id="customDates">
       <input type="date" class="date-input" id="dateFrom" />
       <span class="date-sep">→</span>
       <input type="date" class="date-input" id="dateTo" />
-      <button class="date-apply" onclick="applyCustomRange()">Apply</button>
+      <button class="date-apply" id="dateApply">Apply</button>
     </div>
   </div>
   <div class="archive-scroll">

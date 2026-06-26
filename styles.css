@@ -185,25 +185,30 @@ a { color: inherit; text-decoration: none; }
 .filter-item:hover { background: rgba(216,90,48,0.08); }
 .filter-item.active { background: rgba(216,90,48,0.12); }
 
-.filter-dot {
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
+.filter-icon {
+  width: 18px;
+  height: 18px;
   flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-muted);
   cursor: pointer;
 }
-.dot-all         { background: var(--text-muted); }
-.dot-cardiology  { background: var(--cardiology); }
-.dot-oncology    { background: var(--oncology); }
-.dot-neurology   { background: var(--neurology); }
-.dot-nutrition   { background: var(--nutrition); }
-.dot-mental      { background: var(--mental); }
-.dot-immunology  { background: var(--immunology); }
-.dot-breakthrough{ background: #D97706; }
-.dot-research    { background: var(--cardiology); }
-.dot-trial       { background: #0891B2; }
-.dot-safety      { background: #D97706; }
-.dot-independent { background: var(--red-independent); }
+.filter-icon svg { width: 16px; height: 16px; }
+.filter-item.active .filter-icon { color: var(--coral); }
+.icon-cardiology  { color: var(--cardiology); }
+.icon-oncology    { color: var(--oncology); }
+.icon-neurology   { color: var(--neurology); }
+.icon-nutrition   { color: var(--nutrition); }
+.icon-mental      { color: var(--mental); }
+.icon-immunology  { color: var(--immunology); }
+.icon-breakthrough{ color: #D97706; }
+.icon-research    { color: var(--cardiology); }
+.icon-trial       { color: #0891B2; }
+.icon-safety      { color: #D97706; }
+.icon-independent { color: var(--red-independent); }
+.icon-institutional { color: var(--coral); }
 
 .filter-label {
   font-size: 0.78rem;
@@ -395,6 +400,12 @@ a { color: inherit; text-decoration: none; }
 .search-order { font-style: italic; }
 
 .search-results { max-height: 360px; overflow-y: auto; }
+.search-empty {
+  padding: 16px;
+  text-align: center;
+  font-size: 0.78rem;
+  color: var(--text-muted);
+}
 
 .search-result-item {
   padding: 10px 14px;
@@ -470,6 +481,7 @@ a { color: inherit; text-decoration: none; }
   padding: 24px 28px;
   max-width: 860px;
   width: 100%;
+  margin: 0 auto;
 }
 
 .feed-section { margin-bottom: 40px; }
@@ -1009,3 +1021,81 @@ a { color: inherit; text-decoration: none; }
   font-size: 0.68rem;
   color: #7A96B8;
 }
+
+/* ══════════════════════════════════════════
+   RESPONSIVE
+══════════════════════════════════════════ */
+
+/* Tablet */
+@media (max-width: 900px) {
+  .sidebar {
+    width: 0;
+    border-right: none;
+    transform: translateX(-100%);
+  }
+  .sidebar.expanded {
+    width: var(--sidebar-width-expanded);
+    transform: translateX(0);
+    box-shadow: 4px 0 24px rgba(0,0,0,0.12);
+  }
+  .layout-body {
+    margin-left: 0 !important;
+  }
+  .topbar {
+    padding: 10px 14px;
+    gap: 10px;
+  }
+  .archive-btn span { display: none; }
+  .feed-container { padding: 18px 16px; }
+  .archive-drawer { width: 320px; }
+}
+
+/* Mobile */
+@media (max-width: 600px) {
+  .topbar {
+    flex-wrap: wrap;
+    padding: 10px 12px;
+    gap: 8px;
+  }
+  .topbar-left { width: 100%; }
+  .topbar-center { order: 3; width: 100%; }
+  .topbar-right { margin-left: auto; }
+  .feed-container { padding: 14px 10px; }
+  .card-body { padding: 12px 14px 10px; }
+  .card-title { font-size: 0.88rem; }
+  .card-meaning { padding: 8px 10px; }
+  .section-header { flex-wrap: wrap; gap: 6px; }
+  .footer-grid { grid-template-columns: 1fr; }
+  .archive-drawer { width: 100%; }
+  .site-footer { padding: 10px 12px; }
+  .footer-collapsed { flex-direction: column; align-items: flex-start; gap: 6px; }
+}
+
+/* Hamburger for mobile sidebar */
+.mobile-menu-btn {
+  display: none;
+  width: 32px;
+  height: 32px;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  color: var(--text-secondary);
+  background: var(--bg-base);
+  border: 1.5px solid var(--border);
+  flex-shrink: 0;
+}
+.mobile-menu-btn svg { width: 18px; height: 18px; }
+@media (max-width: 900px) {
+  .mobile-menu-btn { display: flex; }
+  .sidebar-bottom { display: none; }
+}
+
+/* Sidebar overlay on mobile */
+.sidebar-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.3);
+  z-index: 99;
+}
+.sidebar-overlay.open { display: block; }
