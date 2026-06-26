@@ -447,6 +447,14 @@ sidebarOverlay.addEventListener('click', () => {
   sidebarOverlay.classList.remove('open');
 });
 
+/* ── ARCHIVE CARD EXPAND ── */
+document.querySelectorAll('.archive-card').forEach(card => {
+  card.addEventListener('click', (e) => {
+    if (e.target.closest('.expand-open-x')) return;
+    card.classList.toggle('expanded');
+  });
+});
+
 /* ── TIMESTAMP TICKER ── */
 let minutesAgo = 0;
 setInterval(() => {
