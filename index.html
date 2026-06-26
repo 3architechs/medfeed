@@ -1,0 +1,628 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>MedFeed — Real findings. No filters.</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,600;1,400;1,600&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+
+<!-- SIDEBAR -->
+<aside class="sidebar" id="sidebar">
+  <div class="sidebar-logo">
+    <div class="logo-icon">
+      <svg viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="14" cy="14" r="14" fill="#D85A30"/>
+        <polyline points="4,14 8,14 10,9 12,19 14,11 16,17 18,14 24,14"
+          stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+      </svg>
+    </div>
+    <div class="logo-text">
+      <span class="logo-name">MedFeed</span>
+      <span class="logo-sub">Medical · last 24h</span>
+      <span class="logo-tagline">Real findings. No filters.<br>Find a doc who thinks for themselves.</span>
+    </div>
+  </div>
+
+  <nav class="sidebar-nav">
+    <div class="nav-section-label">Specialty</div>
+    <ul class="filter-list">
+      <li class="filter-item active" data-filter="specialty" data-value="all">
+        <span class="filter-dot dot-all" data-tooltip="All specialties"></span>
+        <span class="filter-label">All specialties</span>
+        <span class="filter-count">48</span>
+      </li>
+      <li class="filter-item" data-filter="specialty" data-value="cardiology">
+        <span class="filter-dot dot-cardiology" data-tooltip="Cardiology"></span>
+        <span class="filter-label">Cardiology</span>
+        <span class="filter-count">12</span>
+      </li>
+      <li class="filter-item" data-filter="specialty" data-value="oncology">
+        <span class="filter-dot dot-oncology" data-tooltip="Oncology"></span>
+        <span class="filter-label">Oncology</span>
+        <span class="filter-count">9</span>
+      </li>
+      <li class="filter-item" data-filter="specialty" data-value="neurology">
+        <span class="filter-dot dot-neurology" data-tooltip="Neurology"></span>
+        <span class="filter-label">Neurology</span>
+        <span class="filter-count">8</span>
+      </li>
+      <li class="filter-item" data-filter="specialty" data-value="nutrition">
+        <span class="filter-dot dot-nutrition" data-tooltip="Nutrition &amp; diet"></span>
+        <span class="filter-label">Nutrition &amp; diet</span>
+        <span class="filter-count">7</span>
+      </li>
+      <li class="filter-item" data-filter="specialty" data-value="mental-health">
+        <span class="filter-dot dot-mental" data-tooltip="Mental health"></span>
+        <span class="filter-label">Mental health</span>
+        <span class="filter-count">6</span>
+      </li>
+      <li class="filter-item" data-filter="specialty" data-value="immunology">
+        <span class="filter-dot dot-immunology" data-tooltip="Immunology"></span>
+        <span class="filter-label">Immunology</span>
+        <span class="filter-count">6</span>
+      </li>
+    </ul>
+
+    <div class="nav-section-label">What kind?</div>
+    <ul class="filter-list">
+      <li class="filter-item active" data-filter="kind" data-value="all">
+        <span class="filter-dot dot-all" data-tooltip="All types"></span>
+        <span class="filter-label">All</span>
+      </li>
+      <li class="filter-item" data-filter="kind" data-value="breakthrough">
+        <span class="filter-dot dot-breakthrough" data-tooltip="Breakthrough"></span>
+        <span class="filter-label">Breakthrough</span>
+      </li>
+      <li class="filter-item" data-filter="kind" data-value="research">
+        <span class="filter-dot dot-research" data-tooltip="Research study"></span>
+        <span class="filter-label">Research study</span>
+      </li>
+      <li class="filter-item" data-filter="kind" data-value="trial">
+        <span class="filter-dot dot-trial" data-tooltip="Clinical trial"></span>
+        <span class="filter-label">Clinical trial</span>
+      </li>
+      <li class="filter-item" data-filter="kind" data-value="safety">
+        <span class="filter-dot dot-safety" data-tooltip="Safety update"></span>
+        <span class="filter-label">Safety update</span>
+      </li>
+    </ul>
+
+    <div class="nav-section-label">Source</div>
+    <ul class="filter-list">
+      <li class="filter-item active" data-filter="source" data-value="all">
+        <span class="filter-dot dot-all" data-tooltip="All sources"></span>
+        <span class="filter-label">All sources</span>
+      </li>
+      <li class="filter-item" data-filter="source" data-value="independent">
+        <span class="filter-dot dot-independent" data-tooltip="Independent only"></span>
+        <span class="filter-label">Independent only</span>
+      </li>
+      <li class="filter-item" data-filter="source" data-value="institutional">
+        <span class="filter-dot dot-all" data-tooltip="Institutional only"></span>
+        <span class="filter-label">Institutional only</span>
+      </li>
+    </ul>
+  </nav>
+
+  <div class="sidebar-bottom">
+    <button class="sidebar-toggle-btn" id="sidebarToggle" aria-label="Toggle sidebar">
+      <svg id="chevronIcon" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M10 12L6 8l4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </button>
+  </div>
+</aside>
+
+<!-- Floating tooltip (injected by JS) -->
+<div class="sidebar-tooltip" id="sidebarTooltip"></div>
+
+<!-- MAIN LAYOUT -->
+<div class="layout-body" id="layoutBody">
+
+  <!-- TOP BAR -->
+  <header class="topbar">
+    <div class="topbar-left">
+      <h1 class="feed-title">Today's findings</h1>
+      <span class="feed-meta">48 from X in the last 24h · updated <span id="updatedAgo">just now</span></span>
+    </div>
+    <div class="topbar-center">
+      <div class="search-wrapper">
+        <svg class="search-icon" viewBox="0 0 16 16" fill="none">
+          <circle cx="7" cy="7" r="5" stroke="currentColor" stroke-width="1.5"/>
+          <path d="M11 11l3 3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+        </svg>
+        <input type="text" class="search-input" id="searchInput" placeholder="Search findings…" autocomplete="off"/>
+        <span class="search-clear" id="searchClear" aria-label="Clear search">
+          <svg viewBox="0 0 16 16" fill="none">
+            <path d="M4 4l8 8M12 4l-8 8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+          </svg>
+        </span>
+      </div>
+      <div class="search-dropdown" id="searchDropdown">
+        <div class="search-dropdown-header">
+          <span id="searchResultCount"></span>
+          <span class="search-order">Newest first</span>
+        </div>
+        <div class="search-results" id="searchResults"></div>
+      </div>
+    </div>
+    <div class="topbar-right">
+      <button class="darkmode-btn" id="darkmodeToggle" aria-label="Toggle dark mode">
+        <svg viewBox="0 0 20 20" fill="none">
+          <path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z" fill="currentColor"/>
+        </svg>
+      </button>
+      <button class="archive-btn" id="archiveToggle" aria-label="Older findings">
+        <svg viewBox="0 0 20 20" fill="none">
+          <rect x="2" y="4" width="16" height="3" rx="1" stroke="currentColor" stroke-width="1.5"/>
+          <path d="M4 7v9a1 1 0 001 1h10a1 1 0 001-1V7" stroke="currentColor" stroke-width="1.5"/>
+          <path d="M8 11h4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+        </svg>
+        <span>Older findings</span>
+      </button>
+    </div>
+  </header>
+
+  <!-- FEED -->
+  <main class="feed-container">
+
+    <!-- INDEPENDENT VOICES -->
+    <section class="feed-section" id="independentSection">
+      <div class="section-header">
+        <h2 class="section-title independent-title">
+          <span class="section-dot independent-dot"></span>
+          Independent Voices
+        </h2>
+        <span class="section-badge independent-badge">Not peer-reviewed</span>
+      </div>
+
+      <!-- Card I-1 -->
+      <article class="card independent-card" data-specialty="cardiology" data-kind="independent" data-source="independent">
+        <div class="warning-bar" id="warn1">
+          <span class="warning-text">Not peer-reviewed · independent voice</span>
+          <button class="warning-toggle" onclick="toggleWarning('warn1')">show warning</button>
+        </div>
+        <div class="warning-expanded" id="warn1-expanded">
+          <p>This post is from an independent voice on X. It has not been peer-reviewed, published in a medical journal, or endorsed by any medical institution. Treat it as one doctor's opinion, not established medical fact.</p>
+        </div>
+        <div class="card-body">
+          <div class="card-top">
+            <span class="specialty-pill pill-cardiology">Cardiology</span>
+          </div>
+          <h3 class="card-title">mRNA spike protein fragments detected in cardiac tissue up to 6 months post-vaccination — new preprint raises durability questions</h3>
+          <div class="card-meaning">
+            <span class="meaning-label">What this means for you</span>
+            <p class="meaning-text">A non-peer-reviewed preprint suggests some people may retain vaccine-related proteins in heart tissue longer than expected. This is early data — not a reason to panic, but worth asking your cardiologist about if you've had unexplained symptoms.</p>
+          </div>
+          <div class="card-meta">
+            <span class="meta-handle">@MakisMD</span>
+            <span class="meta-sep">·</span>
+            <span class="meta-time">2h ago</span>
+            <span class="meta-sep">·</span>
+            <svg class="meta-icon" viewBox="0 0 16 16" fill="none"><path d="M2 8s2-5 6-5 6 5 6 5-2 5-6 5-6-5-6-5z" stroke="currentColor" stroke-width="1.2"/><circle cx="8" cy="8" r="2" stroke="currentColor" stroke-width="1.2"/></svg>
+            <span class="meta-likes">4.2k</span>
+            <span class="meta-pill pill-independent">Independent view</span>
+          </div>
+          <div class="card-expand-area" id="expand1">
+            <div class="expand-thread">
+              <p class="expand-full-text">Full post: "New preprint out of Germany — cardiac biopsy samples from 35 post-vaccination myocarditis patients. mRNA fragments (not full spike) found in 22/35 samples at 6-month follow-up. Peer review pending. Methodology is solid — this warrants serious attention from cardiology community. Don't panic. Do pay attention. 🧵1/4"</p>
+              <div class="expand-thread-nav">
+                <button class="thread-nav-btn active">1</button>
+                <button class="thread-nav-btn">2</button>
+                <button class="thread-nav-btn">3</button>
+                <button class="thread-nav-btn">4</button>
+              </div>
+            </div>
+            <a class="expand-open-x" href="#" onclick="return false;">Open on X ↗</a>
+          </div>
+          <button class="card-expand-btn" onclick="toggleExpand('expand1', this)">
+            <svg viewBox="0 0 16 16" fill="none"><path d="M4 6l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+            Show full post
+          </button>
+        </div>
+      </article>
+
+      <!-- Card I-2 -->
+      <article class="card independent-card" data-specialty="cardiology" data-kind="independent" data-source="independent">
+        <div class="warning-bar" id="warn2">
+          <span class="warning-text">Not peer-reviewed · independent voice</span>
+          <button class="warning-toggle" onclick="toggleWarning('warn2')">show warning</button>
+        </div>
+        <div class="warning-expanded" id="warn2-expanded">
+          <p>This post is from an independent voice on X. It has not been peer-reviewed, published in a medical journal, or endorsed by any medical institution. Treat it as one doctor's opinion, not established medical fact.</p>
+        </div>
+        <div class="card-body">
+          <div class="card-top">
+            <span class="specialty-pill pill-cardiology">Cardiology</span>
+          </div>
+          <h3 class="card-title">Early repolarisation pattern in young athletes: overlooked arrhythmia risk or normal variant? New analysis from 1,200-patient cohort</h3>
+          <div class="card-meaning">
+            <span class="meaning-label">What this means for you</span>
+            <p class="meaning-text">Some ECG patterns common in young athletes may signal higher arrhythmia risk than previously thought. If you or your child is a competitive athlete, raise this with your GP before the next season.</p>
+          </div>
+          <div class="card-meta">
+            <span class="meta-handle">@PeterMcCulloughMD</span>
+            <span class="meta-sep">·</span>
+            <span class="meta-time">5h ago</span>
+            <span class="meta-sep">·</span>
+            <svg class="meta-icon" viewBox="0 0 16 16" fill="none"><path d="M2 8s2-5 6-5 6 5 6 5-2 5-6 5-6-5-6-5z" stroke="currentColor" stroke-width="1.2"/><circle cx="8" cy="8" r="2" stroke="currentColor" stroke-width="1.2"/></svg>
+            <span class="meta-likes">1.8k</span>
+            <span class="meta-pill pill-independent">Independent view</span>
+          </div>
+          <div class="card-expand-area" id="expand2">
+            <div class="expand-thread">
+              <p class="expand-full-text">Full post: "Looking at 1,200 young athletes with early repolarisation patterns on ECG. We've always called this 'normal variant' — but the data suggests 8% have measurable conduction delay that meets criteria for further workup. Sports cardiology needs updated screening criteria. 🧵"</p>
+            </div>
+            <a class="expand-open-x" href="#" onclick="return false;">Open on X ↗</a>
+          </div>
+          <button class="card-expand-btn" onclick="toggleExpand('expand2', this)">
+            <svg viewBox="0 0 16 16" fill="none"><path d="M4 6l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+            Show full post
+          </button>
+        </div>
+      </article>
+
+      <!-- Card I-3 -->
+      <article class="card independent-card" data-specialty="mental-health" data-kind="independent" data-source="independent">
+        <div class="warning-bar" id="warn3">
+          <span class="warning-text">Not peer-reviewed · independent voice</span>
+          <button class="warning-toggle" onclick="toggleWarning('warn3')">show warning</button>
+        </div>
+        <div class="warning-expanded" id="warn3-expanded">
+          <p>This post is from an independent voice on X. It has not been peer-reviewed, published in a medical journal, or endorsed by any medical institution. Treat it as one doctor's opinion, not established medical fact.</p>
+        </div>
+        <div class="card-body">
+          <div class="card-top">
+            <span class="specialty-pill pill-mental">Mental Health</span>
+          </div>
+          <h3 class="card-title">SSRIs and emotional blunting: what 20 years of prescribing taught me that the trials didn't show</h3>
+          <div class="card-meaning">
+            <span class="meaning-label">What this means for you</span>
+            <p class="meaning-text">A psychiatrist shares clinical observations about emotional flattening as an underreported side effect of long-term antidepressant use. If you feel "numb" on medication, this validates that experience — worth discussing dose or alternatives with your prescriber.</p>
+          </div>
+          <div class="card-meta">
+            <span class="meta-handle">@DrJocelynKelly</span>
+            <span class="meta-sep">·</span>
+            <span class="meta-time">7h ago</span>
+            <span class="meta-sep">·</span>
+            <svg class="meta-icon" viewBox="0 0 16 16" fill="none"><path d="M2 8s2-5 6-5 6 5 6 5-2 5-6 5-6-5-6-5z" stroke="currentColor" stroke-width="1.2"/><circle cx="8" cy="8" r="2" stroke="currentColor" stroke-width="1.2"/></svg>
+            <span class="meta-likes">9.1k</span>
+            <span class="meta-pill pill-independent">Independent view</span>
+          </div>
+          <div class="card-expand-area" id="expand3">
+            <div class="expand-thread">
+              <p class="expand-full-text">Full post: "20 years prescribing SSRIs. The thing nobody tells patients: emotional blunting is real, common, and we massively undercount it because trials measure depression scores, not emotional range. Patients describe it as 'the sadness is gone but so is everything else.' This needs to be in our informed consent conversations."</p>
+            </div>
+            <a class="expand-open-x" href="#" onclick="return false;">Open on X ↗</a>
+          </div>
+          <button class="card-expand-btn" onclick="toggleExpand('expand3', this)">
+            <svg viewBox="0 0 16 16" fill="none"><path d="M4 6l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+            Show full post
+          </button>
+        </div>
+      </article>
+    </section>
+
+    <!-- INSTITUTIONAL & PEER-REVIEWED -->
+    <section class="feed-section" id="institutionalSection">
+      <div class="section-header">
+        <h2 class="section-title institutional-title">
+          <span class="section-dot institutional-dot"></span>
+          Institutional &amp; Peer-Reviewed
+        </h2>
+        <span class="section-badge institutional-badge">Peer-reviewed sources</span>
+      </div>
+
+      <!-- Card P-1 -->
+      <article class="card institutional-card" data-specialty="oncology" data-kind="breakthrough" data-source="institutional">
+        <div class="card-body">
+          <div class="card-top">
+            <span class="specialty-pill pill-oncology">Oncology</span>
+          </div>
+          <h3 class="card-title">Pembrolizumab plus chemotherapy shows 34% reduction in mortality for triple-negative breast cancer — KEYNOTE-522 5-year follow-up</h3>
+          <div class="card-meaning">
+            <span class="meaning-label">What this means for you</span>
+            <p class="meaning-text">A major 5-year study confirms combining immunotherapy with standard chemo significantly improves survival in one of the hardest-to-treat breast cancer types. If you or someone you love has TNBC, ask about pembrolizumab as part of treatment.</p>
+          </div>
+          <div class="card-meta">
+            <span class="meta-handle">@TheLancet</span>
+            <span class="meta-sep">·</span>
+            <span class="meta-time">1h ago</span>
+            <span class="meta-sep">·</span>
+            <svg class="meta-icon" viewBox="0 0 16 16" fill="none"><path d="M2 8s2-5 6-5 6 5 6 5-2 5-6 5-6-5-6-5z" stroke="currentColor" stroke-width="1.2"/><circle cx="8" cy="8" r="2" stroke="currentColor" stroke-width="1.2"/></svg>
+            <span class="meta-likes">3.4k</span>
+            <span class="meta-pill pill-breakthrough">Breakthrough</span>
+          </div>
+          <div class="card-expand-area" id="expand4">
+            <div class="expand-thread">
+              <p class="expand-full-text">Full post: "KEYNOTE-522 5-year data published today in The Lancet Oncology. Pembrolizumab + chemo in early-stage TNBC: EFS 81.3% vs 72.3% placebo. OS improvement of 34% in high-risk group. This changes standard of care. Full paper: [link]"</p>
+            </div>
+            <a class="expand-open-x" href="#" onclick="return false;">Open on X ↗</a>
+          </div>
+          <button class="card-expand-btn" onclick="toggleExpand('expand4', this)">
+            <svg viewBox="0 0 16 16" fill="none"><path d="M4 6l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+            Show full post
+          </button>
+        </div>
+      </article>
+
+      <!-- Card P-2 -->
+      <article class="card institutional-card" data-specialty="neurology" data-kind="research" data-source="institutional">
+        <div class="card-body">
+          <div class="card-top">
+            <span class="specialty-pill pill-neurology">Neurology</span>
+          </div>
+          <h3 class="card-title">Sleep fragmentation in midlife linked to 40% higher Alzheimer's risk — longitudinal cohort study of 8,000 adults over 15 years</h3>
+          <div class="card-meaning">
+            <span class="meaning-label">What this means for you</span>
+            <p class="meaning-text">Repeatedly waking in the night — not just short total sleep — appears to drive the Alzheimer's risk signal. If you frequently wake during the night, it may be worth speaking to your GP about sleep quality rather than just quantity.</p>
+          </div>
+          <div class="card-meta">
+            <span class="meta-handle">@NatureNeuro</span>
+            <span class="meta-sep">·</span>
+            <span class="meta-time">3h ago</span>
+            <span class="meta-sep">·</span>
+            <svg class="meta-icon" viewBox="0 0 16 16" fill="none"><path d="M2 8s2-5 6-5 6 5 6 5-2 5-6 5-6-5-6-5z" stroke="currentColor" stroke-width="1.2"/><circle cx="8" cy="8" r="2" stroke="currentColor" stroke-width="1.2"/></svg>
+            <span class="meta-likes">7.6k</span>
+            <span class="meta-pill pill-research">Research study</span>
+          </div>
+          <div class="card-expand-area" id="expand5">
+            <div class="expand-thread">
+              <p class="expand-full-text">Full post: "New in @NatureNeuro — sleep fragmentation (not duration) predicts Alzheimer's risk. 8,000-person cohort over 15 years. Waking 3+ times per night → 40% increased risk. REM disruption the strongest predictor. Beta-amyloid clearance mechanism proposed. Open access link:"</p>
+            </div>
+            <a class="expand-open-x" href="#" onclick="return false;">Open on X ↗</a>
+          </div>
+          <button class="card-expand-btn" onclick="toggleExpand('expand5', this)">
+            <svg viewBox="0 0 16 16" fill="none"><path d="M4 6l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+            Show full post
+          </button>
+        </div>
+      </article>
+
+      <!-- Card P-3 -->
+      <article class="card institutional-card" data-specialty="cardiology" data-kind="research" data-source="institutional">
+        <div class="card-body">
+          <div class="card-top">
+            <span class="specialty-pill pill-cardiology">Cardiology</span>
+          </div>
+          <h3 class="card-title">GLP-1 receptor agonists reduce major cardiovascular events by 20% independent of weight loss — meta-analysis of 14 RCTs</h3>
+          <div class="card-meaning">
+            <span class="meaning-label">What this means for you</span>
+            <p class="meaning-text">Drugs like Ozempic appear to protect the heart even in people who don't lose much weight. For patients with type 2 diabetes and heart disease risk, this strengthens the argument for GLP-1s as a cardiovascular medication — not just a weight drug.</p>
+          </div>
+          <div class="card-meta">
+            <span class="meta-handle">@EHJournal</span>
+            <span class="meta-sep">·</span>
+            <span class="meta-time">4h ago</span>
+            <span class="meta-sep">·</span>
+            <svg class="meta-icon" viewBox="0 0 16 16" fill="none"><path d="M2 8s2-5 6-5 6 5 6 5-2 5-6 5-6-5-6-5z" stroke="currentColor" stroke-width="1.2"/><circle cx="8" cy="8" r="2" stroke="currentColor" stroke-width="1.2"/></svg>
+            <span class="meta-likes">5.1k</span>
+            <span class="meta-pill pill-research">Research study</span>
+          </div>
+          <div class="card-expand-area" id="expand6">
+            <div class="expand-thread">
+              <p class="expand-full-text">Full post: "Meta-analysis of 14 RCTs (n=85,000). GLP-1 RAs reduce MACE by 20% — effect holds even when weight loss &lt;5%. Mechanism likely direct cardiac + anti-inflammatory action. Implications for prescribing beyond obesity/T2D discussed in today's @EHJournal editorial."</p>
+            </div>
+            <a class="expand-open-x" href="#" onclick="return false;">Open on X ↗</a>
+          </div>
+          <button class="card-expand-btn" onclick="toggleExpand('expand6', this)">
+            <svg viewBox="0 0 16 16" fill="none"><path d="M4 6l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+            Show full post
+          </button>
+        </div>
+      </article>
+
+      <!-- Card P-4 -->
+      <article class="card institutional-card" data-specialty="nutrition" data-kind="research" data-source="institutional">
+        <div class="card-body">
+          <div class="card-top">
+            <span class="specialty-pill pill-nutrition">Nutrition</span>
+          </div>
+          <h3 class="card-title">Ultra-processed food above 20% of diet associated with measurable cognitive decline in adults over 50</h3>
+          <div class="card-meaning">
+            <span class="meaning-label">What this means for you</span>
+            <p class="meaning-text">A large observational study found that the more ultra-processed food people eat, the faster their thinking speed and memory decline with age. The effect was seen when UPF exceeded a fifth of daily intake — not occasional treats.</p>
+          </div>
+          <div class="card-meta">
+            <span class="meta-handle">@NEJM</span>
+            <span class="meta-sep">·</span>
+            <span class="meta-time">6h ago</span>
+            <span class="meta-sep">·</span>
+            <svg class="meta-icon" viewBox="0 0 16 16" fill="none"><path d="M2 8s2-5 6-5 6 5 6 5-2 5-6 5-6-5-6-5z" stroke="currentColor" stroke-width="1.2"/><circle cx="8" cy="8" r="2" stroke="currentColor" stroke-width="1.2"/></svg>
+            <span class="meta-likes">2.9k</span>
+            <span class="meta-pill pill-research">Research study</span>
+          </div>
+          <div class="card-expand-area" id="expand7">
+            <div class="expand-thread">
+              <p class="expand-full-text">Full post: "Published today: prospective cohort, 10,000 adults 50+, 8-year follow-up. UPF intake &gt;20% of total diet → accelerated cognitive decline (OR 1.28, CI 1.14–1.44). Effect not mediated by BMI or T2D. Suggests direct neurological mechanism. NEJM link in thread."</p>
+            </div>
+            <a class="expand-open-x" href="#" onclick="return false;">Open on X ↗</a>
+          </div>
+          <button class="card-expand-btn" onclick="toggleExpand('expand7', this)">
+            <svg viewBox="0 0 16 16" fill="none"><path d="M4 6l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+            Show full post
+          </button>
+        </div>
+      </article>
+
+      <!-- Card P-5 -->
+      <article class="card institutional-card" data-specialty="immunology" data-kind="trial" data-source="institutional">
+        <div class="card-body">
+          <div class="card-top">
+            <span class="specialty-pill pill-immunology">Immunology</span>
+          </div>
+          <h3 class="card-title">Phase III: bispecific antibody therapy achieves complete remission in 61% of relapsed/refractory diffuse large B-cell lymphoma patients</h3>
+          <div class="card-meaning">
+            <span class="meaning-label">What this means for you</span>
+            <p class="meaning-text">For patients with aggressive lymphoma that has stopped responding to treatment, this approach shows unusually high complete remission rates. Ask your oncologist whether epcoritamab or similar agents are now available or in trials near you.</p>
+          </div>
+          <div class="card-meta">
+            <span class="meta-handle">@bloodjournal</span>
+            <span class="meta-sep">·</span>
+            <span class="meta-time">9h ago</span>
+            <span class="meta-sep">·</span>
+            <svg class="meta-icon" viewBox="0 0 16 16" fill="none"><path d="M2 8s2-5 6-5 6 5 6 5-2 5-6 5-6-5-6-5z" stroke="currentColor" stroke-width="1.2"/><circle cx="8" cy="8" r="2" stroke="currentColor" stroke-width="1.2"/></svg>
+            <span class="meta-likes">1.2k</span>
+            <span class="meta-pill pill-trial">Clinical trial</span>
+          </div>
+          <div class="card-expand-area" id="expand8">
+            <div class="expand-thread">
+              <p class="expand-full-text">Full post: "Phase III epcoritamab in R/R DLBCL: 61% complete remission rate at 6 months. Durability maintained at 12 months in 74% of responders. This is a practice-changing result for a patient population with very few options. Full data in @bloodjournal today."</p>
+            </div>
+            <a class="expand-open-x" href="#" onclick="return false;">Open on X ↗</a>
+          </div>
+          <button class="card-expand-btn" onclick="toggleExpand('expand8', this)">
+            <svg viewBox="0 0 16 16" fill="none"><path d="M4 6l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+            Show full post
+          </button>
+        </div>
+      </article>
+
+      <!-- Card P-6 -->
+      <article class="card institutional-card" data-specialty="mental-health" data-kind="safety" data-source="institutional">
+        <div class="card-body">
+          <div class="card-top">
+            <span class="specialty-pill pill-mental">Mental Health</span>
+          </div>
+          <h3 class="card-title">FDA issues safety update on benzodiazepine co-prescribing with opioids following review of 4,000 adverse events</h3>
+          <div class="card-meaning">
+            <span class="meaning-label">What this means for you</span>
+            <p class="meaning-text">If you're prescribed both a benzo (like diazepam or lorazepam) and an opioid painkiller, the FDA is now formally flagging the combination as higher risk for breathing problems. Review your medications with your doctor if you take both.</p>
+          </div>
+          <div class="card-meta">
+            <span class="meta-handle">@US_FDA</span>
+            <span class="meta-sep">·</span>
+            <span class="meta-time">11h ago</span>
+            <span class="meta-sep">·</span>
+            <svg class="meta-icon" viewBox="0 0 16 16" fill="none"><path d="M2 8s2-5 6-5 6 5 6 5-2 5-6 5-6-5-6-5z" stroke="currentColor" stroke-width="1.2"/><circle cx="8" cy="8" r="2" stroke="currentColor" stroke-width="1.2"/></svg>
+            <span class="meta-likes">3.7k</span>
+            <span class="meta-pill pill-safety">Safety update</span>
+          </div>
+          <div class="card-expand-area" id="expand9">
+            <div class="expand-thread">
+              <p class="expand-full-text">Full post: "FDA Drug Safety Communication: Updated warnings for concomitant use of benzodiazepines and opioid analgesics. Review of 4,000 adverse event reports shows respiratory depression risk 3.86x higher when co-prescribed vs opioid alone. MedWatch link:"</p>
+            </div>
+            <a class="expand-open-x" href="#" onclick="return false;">Open on X ↗</a>
+          </div>
+          <button class="card-expand-btn" onclick="toggleExpand('expand9', this)">
+            <svg viewBox="0 0 16 16" fill="none"><path d="M4 6l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+            Show full post
+          </button>
+        </div>
+      </article>
+
+    </section>
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="site-footer">
+    <div class="footer-collapsed">
+      <span class="footer-legal">Legal &amp; editorial disclaimer — MedFeed is an independent aggregator. Content does not constitute medical advice.</span>
+      <button class="footer-expand-btn" id="footerToggle" onclick="toggleFooter()">Read more</button>
+    </div>
+    <div class="footer-expanded" id="footerExpanded">
+      <div class="footer-about">
+        <p>MedFeed is an independent aggregator that surfaces health and medical findings from X (Twitter) in the last 24 hours. We do not produce, edit, or endorse any content shown. Our goal is to make medical findings accessible to everyone — not just those with access to journals or specialists.</p>
+      </div>
+      <div class="footer-grid">
+        <div class="footer-col">
+          <h4>How independent voices are curated</h4>
+          <p>Independent voices are selected based on follower count, engagement rate, and specialty credentials as listed on X. They are not vetted by MedFeed for clinical accuracy. Their posts are flagged as non-peer-reviewed throughout the feed.</p>
+        </div>
+        <div class="footer-col">
+          <h4>How institutional sources are curated</h4>
+          <p>Institutional sources are verified official accounts of peer-reviewed journals, health agencies, and academic medical centres. Content from these sources has undergone editorial or peer-review processes prior to publication.</p>
+        </div>
+      </div>
+      <p class="footer-legal-line">MedFeed has no affiliation with X Corp., any pharmaceutical company, or any medical institution. Use of this site does not constitute a medical relationship.</p>
+    </div>
+  </footer>
+</div>
+
+<!-- ARCHIVE DRAWER -->
+<div class="archive-overlay" id="archiveOverlay" onclick="closeArchive()"></div>
+<aside class="archive-drawer" id="archiveDrawer">
+  <div class="archive-header">
+    <h2 class="archive-title">Older findings</h2>
+    <button class="archive-close" onclick="closeArchive()" aria-label="Close">
+      <svg viewBox="0 0 16 16" fill="none">
+        <path d="M4 4l8 8M12 4l-8 8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+      </svg>
+    </button>
+  </div>
+  <div class="archive-strip">
+    <div class="archive-range-chips">
+      <button class="range-chip active" onclick="selectRange(this, '48h')">48h</button>
+      <button class="range-chip" onclick="selectRange(this, '72h')">72h</button>
+      <button class="range-chip" onclick="selectRange(this, '7d')">7 days</button>
+      <button class="range-chip" onclick="selectRange(this, 'custom')">Custom</button>
+    </div>
+    <div class="archive-custom-dates" id="customDates">
+      <input type="date" class="date-input" id="dateFrom" />
+      <span class="date-sep">→</span>
+      <input type="date" class="date-input" id="dateTo" />
+      <button class="date-apply" onclick="applyCustomRange()">Apply</button>
+    </div>
+  </div>
+  <div class="archive-scroll">
+    <div class="archive-results">
+      <article class="archive-card">
+        <span class="specialty-pill pill-neurology archive-pill">Neurology</span>
+        <h4 class="archive-card-title">Tau protein clearance during slow-wave sleep confirmed in first human PET imaging study</h4>
+        <div class="archive-card-meta">
+          <span>@NatureNeuro</span><span>·</span><span>32h ago</span>
+          <span class="meta-pill pill-research archive-type-pill">Research study</span>
+        </div>
+      </article>
+      <article class="archive-card">
+        <span class="specialty-pill pill-cardiology archive-pill">Cardiology</span>
+        <h4 class="archive-card-title">High-sensitivity troponin testing reduces unnecessary hospital admissions by 28% in chest pain patients — UK multicentre trial</h4>
+        <div class="archive-card-meta">
+          <span>@EHJournal</span><span>·</span><span>38h ago</span>
+          <span class="meta-pill pill-trial archive-type-pill">Clinical trial</span>
+        </div>
+      </article>
+      <article class="archive-card">
+        <span class="specialty-pill pill-oncology archive-pill">Oncology</span>
+        <h4 class="archive-card-title">Liquid biopsy panels detect stage I colorectal cancer with 89% sensitivity — outperforming current screening protocols</h4>
+        <div class="archive-card-meta">
+          <span>@TheLancet</span><span>·</span><span>44h ago</span>
+          <span class="meta-pill pill-breakthrough archive-type-pill">Breakthrough</span>
+        </div>
+      </article>
+      <article class="archive-card">
+        <span class="specialty-pill pill-mental archive-pill">Mental Health</span>
+        <h4 class="archive-card-title">Ketamine nasal spray shows 70% remission rate in treatment-resistant depression at 4 weeks</h4>
+        <div class="archive-card-meta">
+          <span>@NEJM</span><span>·</span><span>51h ago</span>
+          <span class="meta-pill pill-trial archive-type-pill">Clinical trial</span>
+        </div>
+      </article>
+      <article class="archive-card">
+        <span class="specialty-pill pill-nutrition archive-pill">Nutrition</span>
+        <h4 class="archive-card-title">Time-restricted eating (16:8) reduces visceral fat independent of caloric intake in 12-week controlled study</h4>
+        <div class="archive-card-meta">
+          <span>@CellMetabolism</span><span>·</span><span>58h ago</span>
+          <span class="meta-pill pill-research archive-type-pill">Research study</span>
+        </div>
+      </article>
+      <article class="archive-card">
+        <span class="specialty-pill pill-immunology archive-pill">Immunology</span>
+        <h4 class="archive-card-title">New mRNA vaccine platform demonstrates cross-reactive T-cell response against 8 influenza subtypes in phase I</h4>
+        <div class="archive-card-meta">
+          <span>@NatureMed</span><span>·</span><span>63h ago</span>
+          <span class="meta-pill pill-trial archive-type-pill">Clinical trial</span>
+        </div>
+      </article>
+    </div>
+  </div>
+</aside>
+
+<script src="app.js"></script>
+</body>
+</html>
