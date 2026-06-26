@@ -261,7 +261,7 @@ const cardData = [
   {
     id: 'I-2',
     title: 'Early repolarisation pattern in young athletes: overlooked arrhythmia risk or normal variant?',
-    handle: '@PeterMcCulloughMD',
+    handle: '@P_McCulloughMD',
     time: '5h ago',
     specialty: 'Cardiology',
     kind: 'Independent view',
