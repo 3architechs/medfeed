@@ -71,28 +71,54 @@ function closeArchive() {
 archiveOverlay.addEventListener('click', closeArchive);
 document.getElementById('archiveClose').addEventListener('click', closeArchive);
 
-function filterArchiveByHours(maxHours) {
+const rangeToHours = { '48h': 48, '72h': 72, '7d': 168 };
+const archiveFilters = { range: '48h', specialty: 'all', kind: 'all', customMin: null, customMax: null };
+
+function applyArchiveFilters() {
+  const maxHours = archiveFilters.range === 'custom' ? Infinity : (rangeToHours[archiveFilters.range] || Infinity);
+
   document.querySelectorAll('.archive-card').forEach(card => {
     const hours = parseInt(card.dataset.hours);
-    card.style.display = hours <= maxHours ? '' : 'none';
+    const specialty = card.dataset.specialty;
+    const kind = card.dataset.kind;
+
+    let matchTime;
+    if (archiveFilters.range === 'custom' && archiveFilters.customMin !== null) {
+      matchTime = hours >= archiveFilters.customMin && hours <= archiveFilters.customMax;
+    } else {
+      matchTime = hours <= maxHours;
+    }
+    const matchSpecialty = archiveFilters.specialty === 'all' || specialty === archiveFilters.specialty;
+    const matchKind = archiveFilters.kind === 'all' || kind === archiveFilters.kind;
+
+    card.style.display = (matchTime && matchSpecialty && matchKind) ? '' : 'none';
   });
 }
-
-const rangeToHours = { '48h': 48, '72h': 72, '7d': 168 };
 
 document.querySelectorAll('.range-chip[data-range]').forEach(chip => {
   chip.addEventListener('click', () => {
     document.querySelectorAll('.range-chip').forEach(c => c.classList.remove('active'));
     chip.classList.add('active');
-    const range = chip.dataset.range;
+    archiveFilters.range = chip.dataset.range;
     const customDates = document.getElementById('customDates');
-    if (range === 'custom') {
+    if (chip.dataset.range === 'custom') {
       customDates.classList.add('open');
-      document.querySelectorAll('.archive-card').forEach(c => c.style.display = '');
     } else {
       customDates.classList.remove('open');
-      filterArchiveByHours(rangeToHours[range]);
+      archiveFilters.customMin = null;
+      archiveFilters.customMax = null;
     }
+    applyArchiveFilters();
+  });
+});
+
+document.querySelectorAll('.archive-filter-chip').forEach(chip => {
+  chip.addEventListener('click', () => {
+    const filterType = chip.dataset.archiveFilter;
+    document.querySelectorAll(`.archive-filter-chip[data-archive-filter="${filterType}"]`).forEach(c => c.classList.remove('active'));
+    chip.classList.add('active');
+    archiveFilters[filterType] = chip.dataset.value;
+    applyArchiveFilters();
   });
 });
 
@@ -105,12 +131,9 @@ document.getElementById('dateApply').addEventListener('click', () => {
     const now = new Date();
     const fromHours = (now - fromDate) / 3600000;
     const toHours = (now - toDate) / 3600000;
-    const minH = Math.min(fromHours, toHours);
-    const maxH = Math.max(fromHours, toHours);
-    document.querySelectorAll('.archive-card').forEach(card => {
-      const hours = parseInt(card.dataset.hours);
-      card.style.display = (hours >= minH && hours <= maxH) ? '' : 'none';
-    });
+    archiveFilters.customMin = Math.min(fromHours, toHours);
+    archiveFilters.customMax = Math.max(fromHours, toHours);
+    applyArchiveFilters();
   }
 });
 

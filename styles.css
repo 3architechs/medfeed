@@ -53,21 +53,23 @@
 }
 
 [data-theme="dark"] {
-  --bg-base:        #141210;
-  --bg-card:        #1E1A17;
-  --bg-topbar:      #1A1612;
-  --bg-sidebar:     #1A1410;
+  --bg-base:        #111318;
+  --bg-card:        #1A1D24;
+  --bg-topbar:      #151820;
+  --bg-sidebar:     #13161E;
 
-  --text-primary:   #F5EDE6;
-  --text-secondary: #B0978A;
-  --text-muted:     #7A6860;
+  --text-primary:   #E8ECF2;
+  --text-secondary: #9CA3B0;
+  --text-muted:     #606878;
 
-  --coral-light:    #2A1A12;
-  --red-light:      #2A1212;
+  --coral:          #E8714A;
+  --coral-light:    #1E1518;
+  --coral-hover:    #D4623C;
+  --red-light:      #1E1315;
 
-  --border:         #2E2520;
-  --shadow-card: 0 1px 4px rgba(0,0,0,0.3), 0 4px 16px rgba(0,0,0,0.2);
-  --shadow-dropdown: 0 8px 32px rgba(0,0,0,0.4);
+  --border:         #262A35;
+  --shadow-card: 0 1px 4px rgba(0,0,0,0.4), 0 4px 16px rgba(0,0,0,0.25);
+  --shadow-dropdown: 0 8px 32px rgba(0,0,0,0.5);
 }
 
 /* ── RESET ── */
@@ -102,7 +104,7 @@ a { color: inherit; text-decoration: none; }
   z-index: 100;
   flex-shrink: 0;
 }
-[data-theme="dark"] .sidebar { background: #1A1410; }
+[data-theme="dark"] .sidebar { background: #13161E; }
 
 .sidebar.expanded { width: var(--sidebar-width-expanded); }
 
@@ -586,6 +588,11 @@ a { color: inherit; text-decoration: none; }
   line-height: 1.55;
 }
 [data-theme="dark"] .warning-expanded p { color: #F87171; }
+[data-theme="dark"] .warning-bar { background: rgba(226,75,74,0.08); border-bottom-color: rgba(226,75,74,0.1); }
+[data-theme="dark"] .warning-expanded { background: rgba(226,75,74,0.06); border-bottom-color: rgba(226,75,74,0.1); }
+[data-theme="dark"] .card-meaning { background: rgba(232,113,74,0.08); }
+[data-theme="dark"] .independent-badge { background: rgba(226,75,74,0.1); }
+[data-theme="dark"] .institutional-badge { background: rgba(232,113,74,0.1); }
 .warning-expanded.open { display: block; }
 
 /* Card body */
@@ -851,8 +858,8 @@ a { color: inherit; text-decoration: none; }
   overflow: hidden;
 }
 [data-theme="dark"] .archive-drawer {
-  background: #181C22;
-  border-left-color: #2A3040;
+  background: #151820;
+  border-left-color: #262A35;
 }
 .archive-drawer.open { transform: translateX(0); }
 
@@ -866,8 +873,8 @@ a { color: inherit; text-decoration: none; }
   flex-shrink: 0;
 }
 [data-theme="dark"] .archive-header {
-  background: #181C22;
-  border-bottom-color: #2A3040;
+  background: #151820;
+  border-bottom-color: #262A35;
 }
 
 .archive-title {
@@ -902,8 +909,8 @@ a { color: inherit; text-decoration: none; }
   flex-shrink: 0;
 }
 [data-theme="dark"] .archive-strip {
-  background: #181C22;
-  border-bottom-color: #2A3040;
+  background: #151820;
+  border-bottom-color: #262A35;
 }
 
 .archive-range-chips {
@@ -933,6 +940,59 @@ a { color: inherit; text-decoration: none; }
   color: #FFFFFF;
 }
 
+.archive-filters {
+  margin-top: 10px;
+}
+.archive-filter-row {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  flex-wrap: wrap;
+  margin-bottom: 6px;
+}
+.archive-filter-label {
+  font-size: 0.62rem;
+  font-weight: 600;
+  color: #7A96B8;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  flex-shrink: 0;
+}
+.archive-filter-chip {
+  padding: 3px 9px;
+  border-radius: var(--radius-pill);
+  font-size: 0.65rem;
+  font-weight: 500;
+  font-family: var(--font-sans);
+  border: 1px solid #B8C9DF;
+  background: transparent;
+  color: #6A88B8;
+  cursor: pointer;
+  transition: all var(--transition);
+}
+.archive-filter-chip:hover {
+  border-color: #6A88B8;
+  background: rgba(106,136,184,0.1);
+}
+.archive-filter-chip.active {
+  background: #6A88B8;
+  border-color: #6A88B8;
+  color: #FFFFFF;
+}
+[data-theme="dark"] .archive-filter-chip {
+  border-color: #3A4050;
+  color: #8A96A8;
+}
+[data-theme="dark"] .archive-filter-chip:hover {
+  border-color: #6A88B8;
+  background: rgba(106,136,184,0.15);
+}
+[data-theme="dark"] .archive-filter-chip.active {
+  background: #5577A6;
+  border-color: #5577A6;
+  color: #FFFFFF;
+}
+
 .archive-custom-dates {
   display: none;
   align-items: center;
@@ -953,9 +1013,9 @@ a { color: inherit; text-decoration: none; }
   cursor: pointer;
 }
 [data-theme="dark"] .date-input {
-  background: #222830;
-  color: #C8D5E8;
-  border-color: #3A4860;
+  background: #1A1D24;
+  color: #E8ECF2;
+  border-color: #262A35;
 }
 .date-sep { color: #6A88B8; font-size: 0.8rem; }
 
@@ -991,7 +1051,7 @@ a { color: inherit; text-decoration: none; }
   box-shadow: 0 1px 4px rgba(40,60,100,0.06);
 }
 [data-theme="dark"] .archive-card {
-  background: #1E2530;
+  background: #1A1D24;
   border-left-color: #6A88B8;
 }
 

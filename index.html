@@ -597,6 +597,25 @@
       <button class="range-chip" data-range="7d">7 days</button>
       <button class="range-chip" data-range="custom">Custom</button>
     </div>
+    <div class="archive-filters">
+      <div class="archive-filter-row">
+        <span class="archive-filter-label">Specialty:</span>
+        <button class="archive-filter-chip active" data-archive-filter="specialty" data-value="all">All</button>
+        <button class="archive-filter-chip" data-archive-filter="specialty" data-value="cardiology">Cardiology</button>
+        <button class="archive-filter-chip" data-archive-filter="specialty" data-value="oncology">Oncology</button>
+        <button class="archive-filter-chip" data-archive-filter="specialty" data-value="neurology">Neurology</button>
+        <button class="archive-filter-chip" data-archive-filter="specialty" data-value="nutrition">Nutrition</button>
+        <button class="archive-filter-chip" data-archive-filter="specialty" data-value="mental-health">Mental Health</button>
+        <button class="archive-filter-chip" data-archive-filter="specialty" data-value="immunology">Immunology</button>
+      </div>
+      <div class="archive-filter-row">
+        <span class="archive-filter-label">Type:</span>
+        <button class="archive-filter-chip active" data-archive-filter="kind" data-value="all">All</button>
+        <button class="archive-filter-chip" data-archive-filter="kind" data-value="breakthrough">Breakthrough</button>
+        <button class="archive-filter-chip" data-archive-filter="kind" data-value="research">Research</button>
+        <button class="archive-filter-chip" data-archive-filter="kind" data-value="trial">Clinical trial</button>
+      </div>
+    </div>
     <div class="archive-custom-dates" id="customDates">
       <input type="date" class="date-input" id="dateFrom" />
       <span class="date-sep">→</span>
@@ -606,7 +625,7 @@
   </div>
   <div class="archive-scroll">
     <div class="archive-results">
-      <article class="archive-card" data-hours="32">
+      <article class="archive-card" data-hours="32" data-specialty="neurology" data-kind="research">
         <span class="specialty-pill pill-neurology archive-pill">Neurology</span>
         <h4 class="archive-card-title">Tau protein clearance during slow-wave sleep confirmed in first human PET imaging study</h4>
         <div class="archive-card-meta">
@@ -618,7 +637,7 @@
           <a class="expand-open-x" href="https://x.com/NatureNeuro" target="_blank" rel="noopener noreferrer">Open on X ↗</a>
         </div>
       </article>
-      <article class="archive-card" data-hours="38">
+      <article class="archive-card" data-hours="38" data-specialty="cardiology" data-kind="trial">
         <span class="specialty-pill pill-cardiology archive-pill">Cardiology</span>
         <h4 class="archive-card-title">High-sensitivity troponin testing reduces unnecessary hospital admissions by 28% in chest pain patients — UK multicentre trial</h4>
         <div class="archive-card-meta">
@@ -630,7 +649,7 @@
           <a class="expand-open-x" href="https://x.com/EHJournal" target="_blank" rel="noopener noreferrer">Open on X ↗</a>
         </div>
       </article>
-      <article class="archive-card" data-hours="44">
+      <article class="archive-card" data-hours="44" data-specialty="oncology" data-kind="breakthrough">
         <span class="specialty-pill pill-oncology archive-pill">Oncology</span>
         <h4 class="archive-card-title">Liquid biopsy panels detect stage I colorectal cancer with 89% sensitivity — outperforming current screening protocols</h4>
         <div class="archive-card-meta">
@@ -642,7 +661,7 @@
           <a class="expand-open-x" href="https://x.com/TheLancet" target="_blank" rel="noopener noreferrer">Open on X ↗</a>
         </div>
       </article>
-      <article class="archive-card" data-hours="51">
+      <article class="archive-card" data-hours="51" data-specialty="mental-health" data-kind="trial">
         <span class="specialty-pill pill-mental archive-pill">Mental Health</span>
         <h4 class="archive-card-title">Ketamine nasal spray shows 70% remission rate in treatment-resistant depression at 4 weeks</h4>
         <div class="archive-card-meta">
@@ -654,7 +673,7 @@
           <a class="expand-open-x" href="https://x.com/NEJM" target="_blank" rel="noopener noreferrer">Open on X ↗</a>
         </div>
       </article>
-      <article class="archive-card" data-hours="58">
+      <article class="archive-card" data-hours="58" data-specialty="nutrition" data-kind="research">
         <span class="specialty-pill pill-nutrition archive-pill">Nutrition</span>
         <h4 class="archive-card-title">Time-restricted eating (16:8) reduces visceral fat independent of caloric intake in 12-week controlled study</h4>
         <div class="archive-card-meta">
@@ -666,7 +685,7 @@
           <a class="expand-open-x" href="https://x.com/CellMetabolism" target="_blank" rel="noopener noreferrer">Open on X ↗</a>
         </div>
       </article>
-      <article class="archive-card" data-hours="63">
+      <article class="archive-card" data-hours="63" data-specialty="immunology" data-kind="trial">
         <span class="specialty-pill pill-immunology archive-pill">Immunology</span>
         <h4 class="archive-card-title">New mRNA vaccine platform demonstrates cross-reactive T-cell response against 8 influenza subtypes in phase I</h4>
         <div class="archive-card-meta">
@@ -678,7 +697,7 @@
           <a class="expand-open-x" href="https://x.com/NatureMed" target="_blank" rel="noopener noreferrer">Open on X ↗</a>
         </div>
       </article>
-      <article class="archive-card" data-hours="75">
+      <article class="archive-card" data-hours="75" data-specialty="cardiology" data-kind="research">
         <span class="specialty-pill pill-cardiology archive-pill">Cardiology</span>
         <h4 class="archive-card-title">Sustained blood pressure reduction with renal denervation at 3-year follow-up — SPYRAL HTN-ON MED extended results</h4>
         <div class="archive-card-meta">
@@ -690,7 +709,7 @@
           <a class="expand-open-x" href="https://x.com/EHJournal" target="_blank" rel="noopener noreferrer">Open on X ↗</a>
         </div>
       </article>
-      <article class="archive-card" data-hours="110">
+      <article class="archive-card" data-hours="110" data-specialty="oncology" data-kind="breakthrough">
         <span class="specialty-pill pill-oncology archive-pill">Oncology</span>
         <h4 class="archive-card-title">AI-assisted colonoscopy increases adenoma detection rate by 30% in randomised multicentre trial</h4>
         <div class="archive-card-meta">
@@ -702,7 +721,7 @@
           <a class="expand-open-x" href="https://x.com/TheLancet" target="_blank" rel="noopener noreferrer">Open on X ↗</a>
         </div>
       </article>
-      <article class="archive-card" data-hours="140">
+      <article class="archive-card" data-hours="140" data-specialty="neurology" data-kind="research">
         <span class="specialty-pill pill-neurology archive-pill">Neurology</span>
         <h4 class="archive-card-title">Continuous glucose monitoring reveals link between glycaemic variability and migraine frequency</h4>
         <div class="archive-card-meta">
