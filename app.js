@@ -143,6 +143,19 @@ document.querySelectorAll('.card-expand-btn[data-expand]').forEach(btn => {
 /* ── SIDEBAR FILTERING ── */
 const activeFilters = { specialty: 'all', kind: 'all', source: 'all' };
 
+function updateFilterCounts() {
+  document.querySelectorAll('.filter-item[data-filter="specialty"]').forEach(item => {
+    const value = item.dataset.value;
+    const countEl = item.querySelector('.filter-count');
+    if (!countEl) return;
+    if (value === 'all') {
+      countEl.textContent = document.querySelectorAll('.card').length;
+    } else {
+      countEl.textContent = document.querySelectorAll(`.card[data-specialty="${value}"]`).length;
+    }
+  });
+}
+
 function applyFilters() {
   document.querySelectorAll('.card').forEach(card => {
     const specialty = card.dataset.specialty;
@@ -174,6 +187,8 @@ document.querySelectorAll('.filter-item').forEach(item => {
     applyFilters();
   });
 });
+
+updateFilterCounts();
 
 /* ── THREAD PAGINATION ── */
 const threadData = {
