@@ -720,6 +720,14 @@ a { color: inherit; text-decoration: none; }
   background: var(--coral);
   color: white;
 }
+.expand-open-x:hover .x-login-hint { color: rgba(255,255,255,0.7); }
+.x-login-hint {
+  font-size: 0.58rem;
+  font-weight: 400;
+  color: var(--text-muted);
+  font-style: italic;
+  margin-left: 2px;
+}
 
 .card-expand-btn {
   display: flex;
