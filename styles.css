@@ -400,6 +400,9 @@ a { color: inherit; text-decoration: none; }
 .search-order { font-style: italic; }
 
 .search-results { max-height: 360px; overflow-y: auto; }
+
+/* Filter active state on sidebar */
+.filter-item.active .filter-label { color: var(--coral); font-weight: 500; }
 .search-empty {
   padding: 16px;
   text-align: center;

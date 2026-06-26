@@ -41,16 +41,7 @@ document.querySelectorAll('.filter-icon[data-tooltip]').forEach(dot => {
   });
 });
 
-/* ── FILTER ITEMS ── */
-document.querySelectorAll('.filter-item').forEach(item => {
-  item.addEventListener('click', () => {
-    const filterType = item.dataset.filter;
-    document.querySelectorAll(`.filter-item[data-filter="${filterType}"]`).forEach(i => {
-      i.classList.remove('active');
-    });
-    item.classList.add('active');
-  });
-});
+/* Filter items are handled in SIDEBAR FILTERING section */
 
 /* ── DARK MODE ── */
 const darkmodeToggle = document.getElementById('darkmodeToggle');
@@ -80,15 +71,27 @@ function closeArchive() {
 archiveOverlay.addEventListener('click', closeArchive);
 document.getElementById('archiveClose').addEventListener('click', closeArchive);
 
+function filterArchiveByHours(maxHours) {
+  document.querySelectorAll('.archive-card').forEach(card => {
+    const hours = parseInt(card.dataset.hours);
+    card.style.display = hours <= maxHours ? '' : 'none';
+  });
+}
+
+const rangeToHours = { '48h': 48, '72h': 72, '7d': 168 };
+
 document.querySelectorAll('.range-chip[data-range]').forEach(chip => {
   chip.addEventListener('click', () => {
     document.querySelectorAll('.range-chip').forEach(c => c.classList.remove('active'));
     chip.classList.add('active');
+    const range = chip.dataset.range;
     const customDates = document.getElementById('customDates');
-    if (chip.dataset.range === 'custom') {
+    if (range === 'custom') {
       customDates.classList.add('open');
+      document.querySelectorAll('.archive-card').forEach(c => c.style.display = '');
     } else {
       customDates.classList.remove('open');
+      filterArchiveByHours(rangeToHours[range]);
     }
   });
 });
@@ -97,7 +100,17 @@ document.getElementById('dateApply').addEventListener('click', () => {
   const from = document.getElementById('dateFrom').value;
   const to = document.getElementById('dateTo').value;
   if (from && to) {
-    console.log('Custom range:', from, '→', to);
+    const fromDate = new Date(from);
+    const toDate = new Date(to);
+    const now = new Date();
+    const fromHours = (now - fromDate) / 3600000;
+    const toHours = (now - toDate) / 3600000;
+    const minH = Math.min(fromHours, toHours);
+    const maxH = Math.max(fromHours, toHours);
+    document.querySelectorAll('.archive-card').forEach(card => {
+      const hours = parseInt(card.dataset.hours);
+      card.style.display = (hours >= minH && hours <= maxH) ? '' : 'none';
+    });
   }
 });
 
@@ -122,6 +135,67 @@ document.querySelectorAll('.card-expand-btn[data-expand]').forEach(btn => {
     btn.childNodes.forEach(node => {
       if (node.nodeType === 3 && node.textContent.trim()) {
         node.textContent = isOpen ? '\n            Show full post\n          ' : '\n            Hide full post\n          ';
+      }
+    });
+  });
+});
+
+/* ── SIDEBAR FILTERING ── */
+const activeFilters = { specialty: 'all', kind: 'all', source: 'all' };
+
+function applyFilters() {
+  document.querySelectorAll('.card').forEach(card => {
+    const specialty = card.dataset.specialty;
+    const kind = card.dataset.kind;
+    const source = card.dataset.source;
+
+    const matchSpecialty = activeFilters.specialty === 'all' || specialty === activeFilters.specialty;
+    const matchKind = activeFilters.kind === 'all' || kind === activeFilters.kind;
+    const matchSource = activeFilters.source === 'all' || source === activeFilters.source;
+
+    card.style.display = (matchSpecialty && matchKind && matchSource) ? '' : 'none';
+  });
+
+  document.querySelectorAll('.feed-section').forEach(section => {
+    const visibleCards = section.querySelectorAll('.card:not([style*="display: none"])');
+    section.style.display = visibleCards.length === 0 ? 'none' : '';
+  });
+}
+
+document.querySelectorAll('.filter-item').forEach(item => {
+  item.addEventListener('click', () => {
+    const filterType = item.dataset.filter;
+    const value = item.dataset.value;
+    document.querySelectorAll(`.filter-item[data-filter="${filterType}"]`).forEach(i => {
+      i.classList.remove('active');
+    });
+    item.classList.add('active');
+    activeFilters[filterType] = value;
+    applyFilters();
+  });
+});
+
+/* ── THREAD PAGINATION ── */
+const threadData = {
+  thread1: {
+    1: 'Full post: "New preprint out of Germany — cardiac biopsy samples from 35 post-vaccination myocarditis patients. mRNA fragments (not full spike) found in 22/35 samples at 6-month follow-up. Peer review pending. Methodology is solid — this warrants serious attention from cardiology community. Don\'t panic. Do pay attention. 🧵1/4"',
+    2: '"2/4 — Key methodological detail: samples were obtained from endomyocardial biopsies during routine follow-up for previously diagnosed post-vaccination myocarditis. Detection used RT-qPCR with spike-specific primers. Controls (n=20, non-vaccinated myocarditis) were all negative."',
+    3: '"3/4 — Important caveats: (1) fragments ≠ full spike protein, (2) presence ≠ pathogenicity, (3) sample size is small, (4) no correlation found between fragment persistence and symptom severity. This needs replication in a larger cohort before clinical implications."',
+    4: '"4/4 — My take: This doesn\'t mean vaccines are dangerous. It means we need better long-term monitoring data. The immune system may be handling these fragments without issue. But we owe it to patients to study this properly rather than dismiss it. Science requires follow-through."'
+  }
+};
+
+document.querySelectorAll('.expand-thread-nav').forEach(nav => {
+  const threadId = nav.dataset.thread;
+  const textEl = nav.closest('.expand-thread').querySelector('.expand-full-text');
+
+  nav.querySelectorAll('.thread-nav-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      nav.querySelectorAll('.thread-nav-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      const page = parseInt(btn.dataset.page);
+      if (threadData[threadId] && threadData[threadId][page]) {
+        textEl.textContent = threadData[threadId][page];
       }
     });
   });
