@@ -138,6 +138,17 @@
         <span class="filter-label">Institutional only</span>
       </li>
     </ul>
+
+    <div class="nav-section-label">Saved</div>
+    <ul class="filter-list">
+      <li class="filter-item" data-filter="saved" data-value="saved" id="savedFilterItem">
+        <span class="filter-icon" data-tooltip="Saved findings">
+          <svg viewBox="0 0 16 16" fill="none"><path d="M3 2h10v13l-5-3-5 3z" stroke="currentColor" stroke-width="1.3" stroke-linejoin="round"/></svg>
+        </span>
+        <span class="filter-label">Saved findings</span>
+        <span class="saved-count-badge" id="savedCountBadge">0</span>
+      </li>
+    </ul>
   </nav>
 
   <div class="sidebar-bottom">
@@ -149,6 +160,7 @@
   </div>
 </aside>
 
+<div class="share-toast" id="shareToast">Copied to clipboard</div>
 <div class="sidebar-overlay" id="sidebarOverlay"></div>
 <!-- Floating tooltip (injected by JS) -->
 <div class="sidebar-tooltip" id="sidebarTooltip"></div>
@@ -217,7 +229,7 @@
       </div>
 
       <!-- Card I-1 -->
-      <article class="card independent-card" data-specialty="cardiology" data-kind="independent" data-source="independent">
+      <article class="card independent-card" data-card-id="i1" data-specialty="cardiology" data-kind="independent" data-source="independent">
         <div class="warning-bar" id="warn1">
           <span class="warning-text">Not peer-reviewed · independent voice</span>
           <button class="warning-toggle" data-warn="warn1">show warning</button>
@@ -263,7 +275,7 @@
       </article>
 
       <!-- Card I-2 -->
-      <article class="card independent-card" data-specialty="cardiology" data-kind="independent" data-source="independent">
+      <article class="card independent-card" data-card-id="i2" data-specialty="cardiology" data-kind="independent" data-source="independent">
         <div class="warning-bar" id="warn2">
           <span class="warning-text">Not peer-reviewed · independent voice</span>
           <button class="warning-toggle" data-warn="warn2">show warning</button>
@@ -303,7 +315,7 @@
       </article>
 
       <!-- Card I-3 -->
-      <article class="card independent-card" data-specialty="mental-health" data-kind="independent" data-source="independent">
+      <article class="card independent-card" data-card-id="i3" data-specialty="mental-health" data-kind="independent" data-source="independent">
         <div class="warning-bar" id="warn3">
           <span class="warning-text">Not peer-reviewed · independent voice</span>
           <button class="warning-toggle" data-warn="warn3">show warning</button>
@@ -354,7 +366,7 @@
       </div>
 
       <!-- Card P-1 -->
-      <article class="card institutional-card" data-specialty="oncology" data-kind="breakthrough" data-source="institutional">
+      <article class="card institutional-card" data-card-id="p1" data-specialty="oncology" data-kind="breakthrough" data-source="institutional">
         <div class="card-body">
           <div class="card-top">
             <span class="specialty-pill pill-oncology">Oncology</span>
@@ -387,7 +399,7 @@
       </article>
 
       <!-- Card P-2 -->
-      <article class="card institutional-card" data-specialty="neurology" data-kind="research" data-source="institutional">
+      <article class="card institutional-card" data-card-id="p2" data-specialty="neurology" data-kind="research" data-source="institutional">
         <div class="card-body">
           <div class="card-top">
             <span class="specialty-pill pill-neurology">Neurology</span>
@@ -420,7 +432,7 @@
       </article>
 
       <!-- Card P-3 -->
-      <article class="card institutional-card" data-specialty="cardiology" data-kind="research" data-source="institutional">
+      <article class="card institutional-card" data-card-id="p3" data-specialty="cardiology" data-kind="research" data-source="institutional">
         <div class="card-body">
           <div class="card-top">
             <span class="specialty-pill pill-cardiology">Cardiology</span>
@@ -453,7 +465,7 @@
       </article>
 
       <!-- Card P-4 -->
-      <article class="card institutional-card" data-specialty="nutrition" data-kind="research" data-source="institutional">
+      <article class="card institutional-card" data-card-id="p4" data-specialty="nutrition" data-kind="research" data-source="institutional">
         <div class="card-body">
           <div class="card-top">
             <span class="specialty-pill pill-nutrition">Nutrition</span>
@@ -486,7 +498,7 @@
       </article>
 
       <!-- Card P-5 -->
-      <article class="card institutional-card" data-specialty="immunology" data-kind="trial" data-source="institutional">
+      <article class="card institutional-card" data-card-id="p5" data-specialty="immunology" data-kind="trial" data-source="institutional">
         <div class="card-body">
           <div class="card-top">
             <span class="specialty-pill pill-immunology">Immunology</span>
@@ -519,7 +531,7 @@
       </article>
 
       <!-- Card P-6 -->
-      <article class="card institutional-card" data-specialty="mental-health" data-kind="safety" data-source="institutional">
+      <article class="card institutional-card" data-card-id="p6" data-specialty="mental-health" data-kind="safety" data-source="institutional">
         <div class="card-body">
           <div class="card-top">
             <span class="specialty-pill pill-mental">Mental Health</span>

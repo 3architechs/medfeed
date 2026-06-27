@@ -486,6 +486,117 @@ setInterval(() => {
   if (el) el.textContent = minutesAgo === 1 ? '1m ago' : `${minutesAgo}m ago`;
 }, 60000);
 
+/* ── BOOKMARK + SHARE ── */
+const BOOKMARKS_KEY = 'medfeed_bookmarks';
+
+function getBookmarks() {
+  try { return JSON.parse(localStorage.getItem(BOOKMARKS_KEY)) || []; }
+  catch { return []; }
+}
+
+function saveBookmarks(ids) {
+  localStorage.setItem(BOOKMARKS_KEY, JSON.stringify(ids));
+  updateSavedCount();
+}
+
+function toggleBookmark(cardId) {
+  const bookmarks = getBookmarks();
+  const idx = bookmarks.indexOf(cardId);
+  if (idx > -1) bookmarks.splice(idx, 1);
+  else bookmarks.push(cardId);
+  saveBookmarks(bookmarks);
+  return idx === -1;
+}
+
+function updateSavedCount() {
+  const count = getBookmarks().length;
+  const badge = document.getElementById('savedCountBadge');
+  if (badge) badge.textContent = count;
+}
+
+function showToast(msg) {
+  const toast = document.getElementById('shareToast');
+  toast.textContent = msg;
+  toast.classList.add('visible');
+  setTimeout(() => toast.classList.remove('visible'), 2000);
+}
+
+function shareCard(card) {
+  const title = card.querySelector('.card-title').textContent;
+  const handle = card.querySelector('.meta-handle').textContent;
+  const meaning = card.querySelector('.meaning-text');
+  const text = `${title}\n\n${meaning ? meaning.textContent : ''}\n\n— ${handle} via MedFeed`;
+
+  if (navigator.share) {
+    navigator.share({ title: 'MedFeed Finding', text }).catch(() => {});
+  } else if (navigator.clipboard) {
+    navigator.clipboard.writeText(text).then(() => showToast('Copied to clipboard'));
+  }
+}
+
+document.querySelectorAll('.card[data-card-id]').forEach(card => {
+  const cardId = card.dataset.cardId;
+  const meta = card.querySelector('.card-meta');
+  if (!meta) return;
+
+  const actions = document.createElement('div');
+  actions.className = 'card-actions';
+
+  const bookmarkBtn = document.createElement('button');
+  bookmarkBtn.className = 'card-action-btn bookmark-btn';
+  bookmarkBtn.setAttribute('aria-label', 'Bookmark');
+  bookmarkBtn.innerHTML = '<svg viewBox="0 0 16 16" fill="none"><path d="M3 2h10v13l-5-3-5 3z" stroke="currentColor" stroke-width="1.3" stroke-linejoin="round"/></svg>';
+  if (getBookmarks().includes(cardId)) bookmarkBtn.classList.add('bookmarked');
+
+  bookmarkBtn.addEventListener('click', () => {
+    const added = toggleBookmark(cardId);
+    bookmarkBtn.classList.toggle('bookmarked', added);
+    showToast(added ? 'Saved to bookmarks' : 'Removed from bookmarks');
+  });
+
+  const shareBtn = document.createElement('button');
+  shareBtn.className = 'card-action-btn share-btn';
+  shareBtn.setAttribute('aria-label', 'Share');
+  shareBtn.innerHTML = '<svg viewBox="0 0 16 16" fill="none"><path d="M4 9v4h8V9" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/><path d="M8 2v8" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/><path d="M5 5l3-3 3 3" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+
+  shareBtn.addEventListener('click', () => shareCard(card));
+
+  actions.appendChild(bookmarkBtn);
+  actions.appendChild(shareBtn);
+  meta.appendChild(actions);
+});
+
+// Saved filter
+let savedFilterActive = false;
+const savedFilterItem = document.getElementById('savedFilterItem');
+if (savedFilterItem) {
+  savedFilterItem.addEventListener('click', () => {
+    savedFilterActive = !savedFilterActive;
+    savedFilterItem.classList.toggle('active', savedFilterActive);
+    if (savedFilterActive) {
+      const bookmarks = getBookmarks();
+      document.querySelectorAll('.card[data-card-id]').forEach(card => {
+        card.style.display = bookmarks.includes(card.dataset.cardId) ? '' : 'none';
+      });
+      document.querySelectorAll('.feed-section').forEach(section => {
+        const visible = section.querySelectorAll('.card:not([style*="display: none"])');
+        section.style.display = visible.length === 0 ? 'none' : '';
+      });
+    } else {
+      activeFilters.specialty = 'all';
+      activeFilters.kind = 'all';
+      activeFilters.source = 'all';
+      document.querySelectorAll('.filter-item[data-filter]').forEach(i => {
+        if (i.dataset.value === 'all') i.classList.add('active');
+        else if (i.dataset.filter !== 'saved') i.classList.remove('active');
+      });
+      applyFilters();
+    }
+  });
+}
+
+updateSavedCount();
+
 /* ── FOOTER TOGGLE ── */
 document.getElementById('footerToggle').addEventListener('click', () => {
   const expanded = document.getElementById('footerExpanded');

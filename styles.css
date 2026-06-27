@@ -405,6 +405,87 @@ a { color: inherit; text-decoration: none; }
 
 /* Filter active state on sidebar */
 .filter-item.active .filter-label { color: var(--coral); font-weight: 500; }
+
+/* ── CARD ACTIONS (bookmark + share) ── */
+.card-actions {
+  display: flex;
+  gap: 4px;
+  margin-left: 8px;
+}
+.card-action-btn {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-muted);
+  background: transparent;
+  border: 1.5px solid var(--border);
+  cursor: pointer;
+  transition: all var(--transition);
+  position: relative;
+}
+.card-action-btn svg { width: 13px; height: 13px; }
+.card-action-btn:hover {
+  border-color: var(--coral);
+  color: var(--coral);
+  background: var(--coral-light);
+}
+.card-action-btn.bookmarked {
+  background: var(--coral);
+  border-color: var(--coral);
+  color: white;
+}
+.card-action-btn.bookmarked:hover {
+  background: var(--coral-hover);
+  border-color: var(--coral-hover);
+  color: white;
+}
+
+/* Share toast */
+.share-toast {
+  position: fixed;
+  bottom: 24px;
+  left: 50%;
+  transform: translateX(-50%) translateY(80px);
+  background: var(--text-primary);
+  color: var(--bg-base);
+  font-size: 0.78rem;
+  font-family: var(--font-sans);
+  padding: 8px 18px;
+  border-radius: var(--radius-pill);
+  box-shadow: 0 4px 16px rgba(0,0,0,0.2);
+  z-index: 999;
+  opacity: 0;
+  transition: transform 300ms ease, opacity 300ms ease;
+  pointer-events: none;
+}
+.share-toast.visible {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
+}
+
+/* Saved section in sidebar */
+.saved-count-badge {
+  font-size: 0.6rem;
+  background: var(--coral);
+  color: white;
+  padding: 0 5px;
+  border-radius: var(--radius-pill);
+  min-width: 16px;
+  text-align: center;
+  line-height: 16px;
+}
+
+/* Saved empty state */
+.saved-empty {
+  text-align: center;
+  padding: 40px 20px;
+  color: var(--text-muted);
+  font-size: 0.8rem;
+  font-style: italic;
+}
 .search-empty {
   padding: 16px;
   text-align: center;
