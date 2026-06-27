@@ -101,13 +101,8 @@ document.querySelectorAll('.range-chip[data-range]').forEach(chip => {
     chip.classList.add('active');
     archiveFilters.range = chip.dataset.range;
     const customDates = document.getElementById('customDates');
-    if (chip.dataset.range === 'custom') {
-      customDates.classList.add('open');
-    } else {
-      customDates.classList.remove('open');
-      archiveFilters.customMin = null;
-      archiveFilters.customMax = null;
-    }
+    archiveFilters.customMin = null;
+    archiveFilters.customMax = null;
     applyArchiveFilters();
   });
 });
@@ -122,20 +117,6 @@ document.querySelectorAll('.archive-filter-chip').forEach(chip => {
   });
 });
 
-document.getElementById('dateApply').addEventListener('click', () => {
-  const from = document.getElementById('dateFrom').value;
-  const to = document.getElementById('dateTo').value;
-  if (from && to) {
-    const fromDate = new Date(from);
-    const toDate = new Date(to);
-    const now = new Date();
-    const fromHours = (now - fromDate) / 3600000;
-    const toHours = (now - toDate) / 3600000;
-    archiveFilters.customMin = Math.min(fromHours, toHours);
-    archiveFilters.customMax = Math.max(fromHours, toHours);
-    applyArchiveFilters();
-  }
-});
 
 /* ── WARNING BAR TOGGLE ── */
 document.querySelectorAll('.warning-toggle[data-warn]').forEach(btn => {
