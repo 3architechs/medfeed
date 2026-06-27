@@ -338,6 +338,51 @@ const cardData = [
     type: 'institutional',
     tags: ['fda', 'benzodiazepine', 'benzo', 'opioid', 'safety', 'drug interaction', 'respiratory'],
   },
+  {
+    id: 'A-1', title: 'Tau protein clearance during slow-wave sleep confirmed in first human PET imaging study',
+    handle: '@NatureNeuro', time: '32h ago', hours: 32, specialty: 'Neurology', kind: 'Research study', type: 'archive',
+    tags: ['tau', 'protein', 'sleep', 'slow-wave', 'PET', 'alzheimer', 'brain', 'clearance'],
+  },
+  {
+    id: 'A-2', title: 'High-sensitivity troponin testing reduces unnecessary hospital admissions by 28% in chest pain patients — UK multicentre trial',
+    handle: '@ehj_ed', time: '38h ago', hours: 38, specialty: 'Cardiology', kind: 'Clinical trial', type: 'archive',
+    tags: ['troponin', 'chest pain', 'hospital', 'admissions', 'cardiac', 'heart attack', 'MI'],
+  },
+  {
+    id: 'A-3', title: 'Liquid biopsy panels detect stage I colorectal cancer with 89% sensitivity — outperforming current screening protocols',
+    handle: '@TheLancet', time: '44h ago', hours: 44, specialty: 'Oncology', kind: 'Breakthrough', type: 'archive',
+    tags: ['liquid biopsy', 'colorectal', 'cancer', 'screening', 'early detection', 'blood test'],
+  },
+  {
+    id: 'A-4', title: 'Ketamine nasal spray shows 70% remission rate in treatment-resistant depression at 4 weeks',
+    handle: '@NEJM', time: '51h ago', hours: 51, specialty: 'Mental Health', kind: 'Clinical trial', type: 'archive',
+    tags: ['ketamine', 'esketamine', 'depression', 'treatment-resistant', 'remission', 'nasal spray'],
+  },
+  {
+    id: 'A-5', title: 'Time-restricted eating (16:8) reduces visceral fat independent of caloric intake in 12-week controlled study',
+    handle: '@Cell_Metabolism', time: '58h ago', hours: 58, specialty: 'Nutrition', kind: 'Research study', type: 'archive',
+    tags: ['fasting', 'intermittent', 'time-restricted', 'visceral fat', 'diet', 'circadian', '16:8'],
+  },
+  {
+    id: 'A-6', title: 'New mRNA vaccine platform demonstrates cross-reactive T-cell response against 8 influenza subtypes in phase I',
+    handle: '@NatureMedicine', time: '63h ago', hours: 63, specialty: 'Immunology', kind: 'Clinical trial', type: 'archive',
+    tags: ['mRNA', 'vaccine', 'influenza', 'flu', 'T-cell', 'universal', 'H5N1'],
+  },
+  {
+    id: 'A-7', title: 'Sustained blood pressure reduction with renal denervation at 3-year follow-up — SPYRAL HTN-ON MED extended results',
+    handle: '@ehj_ed', time: '75h ago', hours: 75, specialty: 'Cardiology', kind: 'Research study', type: 'archive',
+    tags: ['blood pressure', 'hypertension', 'renal denervation', 'SPYRAL', 'HTN'],
+  },
+  {
+    id: 'A-8', title: 'AI-assisted colonoscopy increases adenoma detection rate by 30% in randomised multicentre trial',
+    handle: '@TheLancet', time: '110h ago', hours: 110, specialty: 'Oncology', kind: 'Breakthrough', type: 'archive',
+    tags: ['AI', 'colonoscopy', 'adenoma', 'polyp', 'colon cancer', 'screening'],
+  },
+  {
+    id: 'A-9', title: 'Continuous glucose monitoring reveals link between glycaemic variability and migraine frequency',
+    handle: '@NatureNeuro', time: '140h ago', hours: 140, specialty: 'Neurology', kind: 'Research study', type: 'archive',
+    tags: ['glucose', 'CGM', 'migraine', 'glycaemic', 'variability', 'headache'],
+  },
 ];
 
 // Synonym map for semantic-ish search
@@ -420,38 +465,99 @@ function runSearch() {
     return terms.some(t => searchable.includes(t));
   });
 
-  searchResultCount.textContent = `${results.length} result${results.length !== 1 ? 's' : ''}`;
+  const todayResults = results.filter(c => c.type !== 'archive');
+  const olderResults = results.filter(c => c.type === 'archive');
+  const totalCount = results.length;
+
+  searchResultCount.textContent = `${totalCount} result${totalCount !== 1 ? 's' : ''}`;
   while (searchResultsEl.firstChild) searchResultsEl.removeChild(searchResultsEl.firstChild);
 
-  if (results.length === 0) {
+  if (totalCount === 0) {
     const empty = document.createElement('div');
     empty.className = 'search-empty';
     empty.textContent = 'No findings matched. Try different keywords.';
     searchResultsEl.appendChild(empty);
   } else {
-    results.forEach(card => {
-      const item = document.createElement('div');
-      item.className = 'search-result-item';
+    function renderGroup(label, cards) {
+      if (cards.length === 0) return;
+      const header = document.createElement('div');
+      header.className = 'search-group-header';
+      header.textContent = label;
+      searchResultsEl.appendChild(header);
 
-      const titleDiv = document.createElement('div');
-      titleDiv.className = 'search-result-title';
-      buildHighlightedText(card.title, terms).forEach(n => titleDiv.appendChild(n));
+      cards.forEach(card => {
+        const item = document.createElement('div');
+        item.className = 'search-result-item';
+        if (card.type === 'archive') item.dataset.archiveId = card.id;
 
-      const metaDiv = document.createElement('div');
-      metaDiv.className = 'search-result-meta';
-      [card.handle, '·', card.time, '·', card.specialty].forEach(text => {
-        const span = document.createElement('span');
-        span.textContent = text;
-        metaDiv.appendChild(span);
+        const titleDiv = document.createElement('div');
+        titleDiv.className = 'search-result-title';
+        buildHighlightedText(card.title, terms).forEach(n => titleDiv.appendChild(n));
+
+        const metaDiv = document.createElement('div');
+        metaDiv.className = 'search-result-meta';
+        [card.handle, '·', card.time, '·', card.specialty].forEach(text => {
+          const span = document.createElement('span');
+          span.textContent = text;
+          metaDiv.appendChild(span);
+        });
+
+        item.addEventListener('click', () => {
+          searchDropdown.classList.remove('visible');
+          if (card.type === 'archive') {
+            openArchiveAndScrollTo(card);
+          } else {
+            scrollToFeedCard(card);
+          }
+        });
+
+        item.appendChild(titleDiv);
+        item.appendChild(metaDiv);
+        searchResultsEl.appendChild(item);
       });
+    }
 
-      item.appendChild(titleDiv);
-      item.appendChild(metaDiv);
-      searchResultsEl.appendChild(item);
-    });
+    renderGroup('Today', todayResults);
+    renderGroup('Older findings', olderResults);
   }
 
   searchDropdown.classList.add('visible');
+}
+
+/* ── SEARCH NAVIGATION ── */
+function scrollToFeedCard(card) {
+  const el = document.querySelector(`.card[data-card-id="${card.id.toLowerCase().replace('-', '')}"]`);
+  if (el) {
+    el.style.display = '';
+    el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    el.style.boxShadow = '0 0 0 3px var(--coral)';
+    setTimeout(() => el.style.boxShadow = '', 2000);
+  }
+}
+
+function openArchiveAndScrollTo(card) {
+  archiveDrawer.classList.add('open');
+  archiveOverlay.classList.add('open');
+  document.body.style.overflow = 'hidden';
+
+  document.querySelectorAll('.range-chip').forEach(c => c.classList.remove('active'));
+  const range7d = document.querySelector('.range-chip[data-range="7d"]');
+  if (range7d) range7d.classList.add('active');
+  archiveFilters.range = '7d';
+  applyArchiveFilters();
+
+  setTimeout(() => {
+    const archiveCards = document.querySelectorAll('.archive-card');
+    for (const ac of archiveCards) {
+      if (ac.querySelector('.archive-card-title').textContent.trim() === card.title.trim()) {
+        ac.classList.add('expanded');
+        ac.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        ac.style.boxShadow = '0 0 0 3px var(--coral)';
+        setTimeout(() => ac.style.boxShadow = '', 2000);
+        break;
+      }
+    }
+  }, 350);
 }
 
 /* ── MOBILE SIDEBAR TOGGLE ── */
