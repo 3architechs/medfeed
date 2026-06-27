@@ -692,3 +692,103 @@ document.getElementById('footerToggle').addEventListener('click', () => {
   expanded.classList.toggle('open', !isOpen);
   btn.textContent = isOpen ? 'Read more' : 'Show less';
 });
+
+/* ══════════════════════════════════════════
+   DEEP SEARCH (self-contained component)
+══════════════════════════════════════════ */
+(function() {
+  const dsToggle = document.getElementById('deepSearchToggle');
+  const dsDrawer = document.getElementById('deepSearchDrawer');
+  const dsOverlay = document.getElementById('deepSearchOverlay');
+  const dsClose = document.getElementById('deepSearchClose');
+  const dsKeywords = document.getElementById('dsKeywords');
+  const dsDateFrom = document.getElementById('dsDateFrom');
+  const dsDateTo = document.getElementById('dsDateTo');
+  const dsPreview = document.getElementById('dsQueryPreview');
+  const dsSubmit = document.getElementById('dsSubmit');
+
+  if (!dsToggle) return;
+
+  const today = new Date();
+  const thirtyDaysAgo = new Date(today);
+  thirtyDaysAgo.setDate(today.getDate() - 30);
+  const fmt = d => d.toISOString().split('T')[0];
+  dsDateFrom.value = fmt(thirtyDaysAgo);
+  dsDateTo.value = fmt(today);
+  dsDateFrom.max = fmt(today);
+  dsDateTo.max = fmt(today);
+  dsDateFrom.min = fmt(thirtyDaysAgo);
+
+  function openDeepSearch() {
+    dsDrawer.classList.add('open');
+    dsOverlay.classList.add('open');
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closeDeepSearch() {
+    dsDrawer.classList.remove('open');
+    dsOverlay.classList.remove('open');
+    document.body.style.overflow = '';
+  }
+
+  dsToggle.addEventListener('click', openDeepSearch);
+  dsClose.addEventListener('click', closeDeepSearch);
+  dsOverlay.addEventListener('click', closeDeepSearch);
+
+  document.querySelectorAll('.ds-chip').forEach(chip => {
+    chip.addEventListener('click', () => {
+      chip.classList.toggle('active');
+      updateDsPreview();
+    });
+  });
+
+  dsKeywords.addEventListener('input', updateDsPreview);
+  dsDateFrom.addEventListener('change', () => {
+    const from = new Date(dsDateFrom.value);
+    const maxBack = new Date(today);
+    maxBack.setDate(today.getDate() - 30);
+    if (from < maxBack) dsDateFrom.value = fmt(maxBack);
+    updateDsPreview();
+  });
+  dsDateTo.addEventListener('change', updateDsPreview);
+
+  function buildQuery() {
+    const parts = [];
+
+    const kw = dsKeywords.value.trim();
+    if (kw) parts.push(kw);
+
+    document.querySelectorAll('.ds-chip.active').forEach(chip => {
+      const val = chip.dataset.dsValue;
+      if (val.startsWith('from:')) {
+        parts.push(val);
+      } else {
+        parts.push(val);
+      }
+    });
+
+    const fromVal = dsDateFrom.value;
+    const toVal = dsDateTo.value;
+    if (fromVal) parts.push('since:' + fromVal);
+    if (toVal) parts.push('until:' + toVal);
+
+    return parts.join(' ');
+  }
+
+  function updateDsPreview() {
+    const q = buildQuery();
+    dsPreview.textContent = q || 'Select filters to build your query…';
+  }
+
+  dsSubmit.addEventListener('click', () => {
+    const q = buildQuery();
+    if (!q || q === 'since:' + fmt(thirtyDaysAgo) + ' until:' + fmt(today)) {
+      dsPreview.textContent = 'Please add keywords or select filters.';
+      return;
+    }
+    const url = 'https://x.com/search?q=' + encodeURIComponent(q) + '&f=top';
+    window.open(url, '_blank', 'noopener,noreferrer');
+  });
+
+  updateDsPreview();
+})();

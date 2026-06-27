@@ -204,6 +204,14 @@
           <path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z" fill="currentColor"/>
         </svg>
       </button>
+      <button class="deepsearch-btn" id="deepSearchToggle" aria-label="Deep search on X">
+        <svg viewBox="0 0 20 20" fill="none">
+          <circle cx="8.5" cy="8.5" r="5.5" stroke="currentColor" stroke-width="1.5"/>
+          <path d="M13 13l4.5 4.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+          <path d="M7 7h3M7 10h2" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/>
+        </svg>
+        <span>Deep search</span>
+      </button>
       <button class="archive-btn" id="archiveToggle" aria-label="Older findings">
         <svg viewBox="0 0 20 20" fill="none">
           <rect x="2" y="4" width="16" height="3" rx="1" stroke="currentColor" stroke-width="1.5"/>
@@ -739,6 +747,85 @@
         </div>
       </article>
     </div>
+  </div>
+</aside>
+
+<!-- DEEP SEARCH DRAWER -->
+<div class="deepsearch-overlay" id="deepSearchOverlay"></div>
+<aside class="deepsearch-drawer" id="deepSearchDrawer">
+  <div class="deepsearch-header">
+    <h2 class="deepsearch-title">Deep search on X</h2>
+    <button class="deepsearch-close" id="deepSearchClose" aria-label="Close">
+      <svg viewBox="0 0 16 16" fill="none">
+        <path d="M4 4l8 8M12 4l-8 8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+      </svg>
+    </button>
+  </div>
+  <div class="deepsearch-body">
+    <p class="deepsearch-desc">Build a targeted search query and open results on X. Requires X login.</p>
+
+    <div class="deepsearch-section">
+      <label class="deepsearch-label">Keywords</label>
+      <input type="text" class="deepsearch-input" id="dsKeywords" placeholder="e.g. spike protein, GLP-1, sleep apnea…" autocomplete="off"/>
+    </div>
+
+    <div class="deepsearch-section">
+      <label class="deepsearch-label">Specialty</label>
+      <div class="deepsearch-chips" data-ds-group="specialty">
+        <button class="ds-chip" data-ds-value="cardiology">Cardiology</button>
+        <button class="ds-chip" data-ds-value="oncology">Oncology</button>
+        <button class="ds-chip" data-ds-value="neurology">Neurology</button>
+        <button class="ds-chip" data-ds-value="nutrition">Nutrition</button>
+        <button class="ds-chip" data-ds-value="mental health">Mental Health</button>
+        <button class="ds-chip" data-ds-value="immunology">Immunology</button>
+      </div>
+    </div>
+
+    <div class="deepsearch-section">
+      <label class="deepsearch-label">Type</label>
+      <div class="deepsearch-chips" data-ds-group="type">
+        <button class="ds-chip" data-ds-value="breakthrough">Breakthrough</button>
+        <button class="ds-chip" data-ds-value="research study">Research</button>
+        <button class="ds-chip" data-ds-value="clinical trial">Clinical trial</button>
+        <button class="ds-chip" data-ds-value="safety">Safety update</button>
+      </div>
+    </div>
+
+    <div class="deepsearch-section">
+      <label class="deepsearch-label">Source</label>
+      <div class="deepsearch-chips" data-ds-group="source">
+        <button class="ds-chip ds-chip-src" data-ds-value="from:MakisMedicine">@MakisMedicine</button>
+        <button class="ds-chip ds-chip-src" data-ds-value="from:P_McCulloughMD">@P_McCulloughMD</button>
+        <button class="ds-chip ds-chip-src" data-ds-value="from:TheLancet">@TheLancet</button>
+        <button class="ds-chip ds-chip-src" data-ds-value="from:NatureNeuro">@NatureNeuro</button>
+        <button class="ds-chip ds-chip-src" data-ds-value="from:NEJM">@NEJM</button>
+        <button class="ds-chip ds-chip-src" data-ds-value="from:ehj_ed">@ehj_ed</button>
+        <button class="ds-chip ds-chip-src" data-ds-value="from:BloodJournal">@BloodJournal</button>
+        <button class="ds-chip ds-chip-src" data-ds-value="from:US_FDA">@US_FDA</button>
+        <button class="ds-chip ds-chip-src" data-ds-value="from:NatureMedicine">@NatureMedicine</button>
+        <button class="ds-chip ds-chip-src" data-ds-value="from:Cell_Metabolism">@Cell_Metabolism</button>
+      </div>
+    </div>
+
+    <div class="deepsearch-section">
+      <label class="deepsearch-label">Date range (max 30 days)</label>
+      <div class="deepsearch-dates">
+        <input type="date" class="deepsearch-date" id="dsDateFrom" />
+        <span class="deepsearch-date-sep">→</span>
+        <input type="date" class="deepsearch-date" id="dsDateTo" />
+      </div>
+    </div>
+
+    <div class="deepsearch-preview">
+      <label class="deepsearch-label">Query preview</label>
+      <div class="deepsearch-query-box" id="dsQueryPreview">Select filters to build your query…</div>
+    </div>
+
+    <button class="deepsearch-submit" id="dsSubmit">
+      <svg viewBox="0 0 16 16" fill="none"><path d="M2 8s2-5 6-5 6 5 6 5-2 5-6 5-6-5-6-5z" stroke="currentColor" stroke-width="1.2"/><circle cx="8" cy="8" r="2" stroke="currentColor" stroke-width="1.2"/></svg>
+      Search on X
+    </button>
+    <p class="deepsearch-note">Opens x.com in a new tab. You must be logged in to X to see results.</p>
   </div>
 </aside>
 
